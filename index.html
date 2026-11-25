@@ -4,106 +4,433 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Jojo's Little World 💗</title>
+<meta name="theme-color" content="#10182f">
+<title>Jojo's Little World ♡</title>
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&display=swap');
+
+:root{
+  --navy:#10182f;
+  --navy2:#182443;
+  --pink:#f5a9ca;
+  --light:#ffe5f0;
+  --white:#fff9fc;
+  --gold:#e8c994;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+
+html{scroll-behavior:smooth}
+
 body{
-font-family:Georgia,serif;
-background:linear-gradient(135deg,#101b3b,#202c55,#f3a6c8);
-color:white;text-align:center;overflow-x:hidden
+  background:var(--navy);
+  color:var(--white);
+  font-family:'DM Sans',sans-serif;
+  overflow-x:hidden;
 }
+
+body:before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:-1;
+  background:
+    radial-gradient(circle at 15% 15%,#f5a9ca18,transparent 30%),
+    radial-gradient(circle at 85% 60%,#536aab22,transparent 35%);
+}
+
+button{font-family:inherit}
+
 #lockScreen{
-position:fixed;inset:0;z-index:99999;
-background:linear-gradient(135deg,#101b3b,#202c55,#f3a6c8);
-display:flex;flex-direction:column;
-justify-content:center;align-items:center;
-padding:25px;text-align:center
+  position:fixed;
+  inset:0;
+  z-index:10000;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:25px;
+  text-align:center;
+  background:
+    radial-gradient(circle at 50% 20%,#f5a9ca35,transparent 35%),
+    linear-gradient(145deg,#0b1227,#172344 65%,#39253f);
 }
-#lockScreen h1{color:#ffc2df;font-size:45px;margin-bottom:15px}
-#lockScreen p{line-height:1.8}
+
+.lock-heart{
+  font-size:55px;
+  color:var(--pink);
+  animation:pulse 2s infinite;
+  margin-bottom:20px;
+}
+
+#lockScreen h1{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(38px,8vw,60px);
+  color:var(--pink);
+  margin-bottom:12px;
+}
+
+#lockScreen p{
+  color:#f6dce8;
+  line-height:1.8;
+}
+
 #passwordInput{
-padding:15px;border-radius:25px;border:none;
-text-align:center;font-size:17px;margin:20px;
-width:min(280px,90%)
+  width:min(300px,90%);
+  padding:16px;
+  border-radius:30px;
+  border:1px solid #f5a9ca88;
+  outline:none;
+  margin:24px 0 8px;
+  background:#ffffff12;
+  color:white;
+  text-align:center;
+  font-size:17px;
 }
-header{padding:75px 20px 45px}
-h1{color:#ffc2df;font-size:clamp(38px,8vw,65px);margin-bottom:15px}
-.subtitle{font-size:18px;color:#ffe4f1}
+
+#passwordInput::placeholder{color:#eac7d8}
+
+.main-btn{
+  padding:14px 27px;
+  border:0;
+  border-radius:30px;
+  background:var(--pink);
+  color:var(--navy);
+  font-weight:700;
+  font-size:15px;
+  cursor:pointer;
+  transition:.3s;
+}
+
+.main-btn:hover{
+  transform:translateY(-3px);
+  box-shadow:0 8px 25px #f5a9ca40;
+}
+
+#errorMessage{
+  color:#ffd0e1;
+  margin-top:12px;
+  min-height:22px;
+}
+
+.hero{
+  min-height:90vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  padding:70px 20px;
+  text-align:center;
+  position:relative;
+}
+
+.eyebrow{
+  color:var(--gold);
+  letter-spacing:5px;
+  font-size:11px;
+  text-transform:uppercase;
+  margin-bottom:22px;
+}
+
+.hero h1{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(48px,10vw,90px);
+  color:var(--pink);
+  line-height:1.12;
+  text-shadow:0 5px 35px #f5a9ca22;
+}
+
+.hero .subtitle{
+  margin-top:20px;
+  color:#e8dce6;
+  font-size:17px;
+  letter-spacing:1px;
+}
+
+.hero-date{
+  margin-top:35px;
+  color:var(--gold);
+  letter-spacing:4px;
+  font-size:13px;
+}
+
+.scroll{
+  position:absolute;
+  bottom:30px;
+  color:#e9b8d0;
+  font-size:12px;
+  letter-spacing:3px;
+  animation:float 2s infinite;
+}
+
 section{
-max-width:850px;margin:25px auto;padding:30px 22px;
-width:92%;background:rgba(255,255,255,.10);
-border:1px solid rgba(255,255,255,.2);
-border-radius:25px;backdrop-filter:blur(10px);
-box-shadow:0 10px 30px rgba(0,0,0,.15)
+  width:min(900px,91%);
+  margin:35px auto;
+  padding:clamp(25px,5vw,50px);
+  background:linear-gradient(145deg,#ffffff0d,#ffffff05);
+  border:1px solid #f5a9ca35;
+  border-radius:25px;
+  box-shadow:0 18px 50px #00000020;
 }
-h2{color:#ffc2df;margin-bottom:20px;font-size:28px}
-p{line-height:1.9;font-size:17px}
-button{
-background:#f5a5cc;color:#142044;border:none;
-border-radius:30px;padding:13px 25px;
-font-size:16px;font-weight:bold;cursor:pointer;margin:12px;
-transition:.3s
+
+.section-tag{
+  color:var(--gold);
+  letter-spacing:4px;
+  text-transform:uppercase;
+  font-size:10px;
+  margin-bottom:12px;
 }
-button:hover{transform:scale(1.05);background:#ffd0e6}
-.letter{text-align:left;line-height:2;color:#fff3f9;white-space:pre-line}
+
+h2{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(27px,5vw,38px);
+  color:var(--pink);
+  margin-bottom:20px;
+  font-weight:500;
+}
+
+.section-intro{
+  color:#e6dce7;
+  line-height:1.9;
+  margin-bottom:20px;
+}
+
+.letter{
+  color:#f5e9f0;
+  font-size:16px;
+  line-height:2.15;
+  white-space:pre-line;
+  text-align:left;
+}
+
+.signature{
+  color:var(--pink);
+  font-family:'Playfair Display',serif;
+  font-size:23px;
+  margin-top:25px;
+}
+
 .gallery{
-display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));
-gap:15px
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
+  gap:18px;
+  margin-top:25px;
 }
-.gallery img{
-width:100%;height:230px;object-fit:cover;
-border-radius:18px;border:2px solid #ffc2df
+
+.photo-frame{
+  background:#ffffff0d;
+  padding:9px;
+  border:1px solid #f5a9ca55;
+  border-radius:17px;
+  transition:.35s;
 }
-.counter{font-size:22px;color:#ffd0e6;margin:15px}
-.note{
-display:none;margin:15px auto;padding:18px;
-background:rgba(255,255,255,.12);
-border-radius:15px;line-height:1.8
+
+.photo-frame:hover{
+  transform:translateY(-7px) rotate(-1deg);
 }
-audio{width:100%;max-width:450px}
-footer{padding:35px 15px;color:#ffe1ef}
-.heart{color:#ffb6d8;font-size:25px}
+
+.photo-frame img{
+  width:100%;
+  height:260px;
+  object-fit:cover;
+  display:block;
+  border-radius:11px;
+  background:#202c4a;
+}
+
+.photo-caption{
+  color:#f6c6dc;
+  padding:12px 5px 5px;
+  font-family:'Playfair Display',serif;
+  font-style:italic;
+}
+
+.music-card{
+  background:#f5a9ca0c;
+  border:1px solid #f5a9ca44;
+  border-radius:18px;
+  padding:25px;
+}
+
+.music-title{
+  color:var(--pink);
+  font-family:'Playfair Display',serif;
+  font-size:21px;
+  margin-bottom:12px;
+}
+
+audio{width:100%;margin-top:12px}
+
+.countdown{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:10px;
+  margin-top:25px;
+}
+
+.time-box{
+  background:#f5a9ca12;
+  border:1px solid #f5a9ca40;
+  border-radius:15px;
+  padding:18px 5px;
+}
+
+.time-box strong{
+  display:block;
+  color:var(--pink);
+  font-size:clamp(22px,5vw,35px);
+}
+
+.time-box span{
+  color:#d8c6d3;
+  font-size:11px;
+  letter-spacing:1px;
+}
+
+.notes-grid{
+  display:grid;
+  gap:13px;
+}
+
+.note-btn{
+  width:100%;
+  padding:17px;
+  border:1px solid #f5a9ca44;
+  background:#ffffff08;
+  border-radius:15px;
+  color:#ffe1ee;
+  text-align:left;
+  font-size:15px;
+  cursor:pointer;
+}
+
+.note-content{
+  display:none;
+  padding:18px;
+  margin-top:8px;
+  border-radius:13px;
+  background:#f5a9ca12;
+  color:#f8e8f0;
+  line-height:1.9;
+  text-align:left;
+}
+
+.gift-area{
+  text-align:center;
+  padding:15px 0;
+}
+
+.gift-icon{
+  font-size:75px;
+  display:block;
+  margin-bottom:20px;
+  animation:float 3s infinite;
+}
+
+#giftButton:disabled{
+  opacity:.45;
+  cursor:not-allowed;
+  transform:none;
+  box-shadow:none;
+}
+
+#giftMessage{
+  display:none;
+  margin-top:25px;
+  padding:25px;
+  border:1px solid #f5a9ca55;
+  background:#f5a9ca12;
+  border-radius:18px;
+  color:#ffe8f2;
+  line-height:2;
+  text-align:left;
+  animation:appear .8s ease;
+}
+
+.footer{
+  text-align:center;
+  padding:65px 20px;
+  color:#d8c3d2;
+  line-height:2;
+}
+
+.footer .heart{
+  font-size:25px;
+  color:var(--pink);
+}
+
+@keyframes pulse{
+  50%{transform:scale(1.12)}
+}
+@keyframes float{
+  50%{transform:translateY(-8px)}
+}
+@keyframes appear{
+  from{opacity:0;transform:translateY(15px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+@media(max-width:520px){
+  .countdown{gap:6px}
+  .time-box{padding:14px 2px}
+  .photo-frame img{height:230px}
+  section{border-radius:19px}
+}
 </style>
 </head>
 
 <body>
 
-<!-- PASSWORD SCREEN -->
+<!-- PASSWORD -->
 <div id="lockScreen">
-  <div class="heart">♡ ♡ ♡</div>
-  <h1>Welcome, Jojo 💗</h1>
-  <p>A little surprise is waiting for you...</p>
-  <p>Enter your secret password 🎀</p>
+  <div class="lock-heart">♡</div>
+  <p class="eyebrow">A PRIVATE LITTLE SURPRISE</p>
+  <h1>For Jojo</h1>
+  <p>Somewhere in this little world, something special is waiting for you.</p>
+  <p>Enter your secret password to begin.</p>
 
-  <input id="passwordInput" type="password"
-  placeholder="Enter password">
+  <input
+    id="passwordInput"
+    type="password"
+    placeholder="Your secret password"
+    autocomplete="off"
+  >
 
-  <button onclick="unlockSite()">Unlock My Surprise 💗</button>
+  <button class="main-btn" onclick="unlockSite()">
+    Open My Little World ♡
+  </button>
+
   <p id="errorMessage"></p>
 </div>
 
-<!-- WEBSITE CONTENT -->
-<header>
-<div class="heart">♡ ♡ ♡</div>
-<h1>Jojo's Little World</h1>
-<p class="subtitle">A little place made just for you 💗</p>
-<p style="margin-top:20px;">March 22, 2027</p>
+<!-- HERO -->
+<header class="hero">
+  <p class="eyebrow">A LITTLE WORLD MADE FOR YOU</p>
+  <h1>Jojo's<br>Little World</h1>
+  <p class="subtitle">A collection of memories, words and little surprises.</p>
+  <p class="hero-date">MARCH 22 · 2027</p>
+  <div class="scroll">SCROLL TO EXPLORE ↓</div>
 </header>
 
+<!-- INTRO -->
 <section>
-<h2>Happy Birthday, Jojo! 🎂</h2>
-<p>
-Some people make ordinary days feel special without even trying.
-And you are definitely one of those people.
-This little website is just a small way to celebrate you.
-</p>
+  <p class="section-tag">A SPECIAL DAY</p>
+  <h2>Happy Birthday, Jojo ♡</h2>
+  <p class="section-intro">
+    Some people make ordinary days feel special without even trying.
+    This little place was made to celebrate you, the memories,
+    the laughs, and all the little things worth remembering.
+  </p>
 </section>
 
+<!-- LETTER -->
 <section>
-<h2>A Letter For You 💌</h2>
-<div class="letter">
-Dear Jojo,
+  <p class="section-tag">WORDS FROM THE HEART</p>
+  <h2>A Letter For You 💌</h2>
+
+  <div class="letter">Dear Jojo,
 
 I honestly don't even know where to start, because there are so many things I could say.
 
@@ -124,130 +451,261 @@ No matter how busy life gets, I hope we never become strangers.
 
 You're someone I'm genuinely glad became part of my story, and I hope this little surprise makes you smile.
 
-Happy Birthday, Jojo. 💗
+Happy Birthday, Jojo. ♡</div>
 
-With lots of care,
-Adam
-</div>
+  <div class="signature">With lots of care,<br>Adam ♡</div>
 </section>
 
+<!-- PHOTOS -->
 <section>
-<h2>Our Little Gallery 📸</h2>
-<p style="margin-bottom:20px">A few pictures to keep some memories close.</p>
-<div class="gallery">
-<img src="jojo1.jpg" alt="Memory one">
-<img src="jojo2.jpg" alt="Memory two">
-<img src="jojo3.jpg" alt="Memory three">
-</div>
+  <p class="section-tag">LITTLE MEMORIES</p>
+  <h2>Our Photo Gallery 📸</h2>
+  <p class="section-intro">
+    A few pictures, a few moments, and memories worth keeping.
+  </p>
+
+  <div class="gallery">
+    <div class="photo-frame">
+      <img src="./jojo1.jpg" alt="Our first memory"
+        onerror="this.alt='Photo not found - check jojo1.jpg';this.style.display='none';this.parentElement.insertAdjacentHTML('beforeend','<p>Photo 1 not found. Check the file name.</p>')">
+      <p class="photo-caption">A memory to keep ♡</p>
+    </div>
+
+    <div class="photo-frame">
+      <img src="./jojo2.jpg" alt="A special memory"
+        onerror="this.alt='Photo not found - check jojo2.jpg';this.style.display='none';this.parentElement.insertAdjacentHTML('beforeend','<p>Photo 2 not found. Check the file name.</p>')">
+      <p class="photo-caption">One of those moments ♡</p>
+    </div>
+
+    <div class="photo-frame">
+      <img src="./jojo3.jpg" alt="Another lovely memory"
+        onerror="this.alt='Photo not found - check jojo3.jpg';this.style.display='none';this.parentElement.insertAdjacentHTML('beforeend','<p>Photo 3 not found. Check the file name.</p>')">
+      <p class="photo-caption">Something worth remembering ♡</p>
+    </div>
+  </div>
 </section>
 
+<!-- MUSIC -->
 <section>
-<h2>A Song For You 🎵</h2>
-<p style="margin-bottom:18px">
-Every special memory deserves its own soundtrack.
-</p>
-<audio controls>
-<source src="song.mp3" type="audio/mpeg">
-Your browser does not support audio.
-</audio>
+  <p class="section-tag">A SONG FOR YOU</p>
+  <h2>Our Little Soundtrack 🎵</h2>
+
+  <div class="music-card">
+    <p class="music-title">A song to make this day special</p>
+    <p class="section-intro">
+      Press play and enjoy your little birthday moment.
+    </p>
+
+    <audio controls preload="metadata">
+      <source
+        src="./Albumaty.Com_amrw_dyab_wenty_gnby.mp3"
+        type="audio/mpeg">
+      Your browser does not support audio.
+    </audio>
+  </div>
 </section>
 
+<!-- COUNTDOWN -->
 <section>
-<h2>Countdown to Your Day 🎀</h2>
-<div class="counter" id="countdown">Loading...</div>
-<p>Until March 22, 2027 💗</p>
+  <p class="section-tag">THE BIG DAY</p>
+  <h2>Counting Down To You 🎀</h2>
+  <p class="section-intro" id="countdownCaption">
+    Every little second brings us closer to your day.
+  </p>
+
+  <div class="countdown" id="countdown">
+    <div class="time-box"><strong id="days">--</strong><span>DAYS</span></div>
+    <div class="time-box"><strong id="hours">--</strong><span>HOURS</span></div>
+    <div class="time-box"><strong id="minutes">--</strong><span>MINUTES</span></div>
+    <div class="time-box"><strong id="seconds">--</strong><span>SECONDS</span></div>
+  </div>
 </section>
 
+<!-- HIDDEN NOTES -->
 <section>
-<h2>Things I Never Said 💭</h2>
+  <p class="section-tag">LITTLE THOUGHTS</p>
+  <h2>Things I Never Said 💭</h2>
+  <p class="section-intro">A few little reminders, just for you.</p>
 
-<button onclick="showNote(1)">A little reminder</button>
-<div class="note" id="note1">
-Never forget that you deserve all the happiness in the world.
-</div>
+  <div class="notes-grid">
+    <div>
+      <button class="note-btn" onclick="toggleNote(1)">
+        ♡ A little reminder
+      </button>
+      <div class="note-content" id="note1">
+        Never forget that you deserve all the happiness in the world.
+        Keep being yourself, because that's already something special.
+      </div>
+    </div>
 
-<button onclick="showNote(2)">One more thing</button>
-<div class="note" id="note2">
-Thank you for all the laughs and the memories.
-They mean more than you probably realize.
-</div>
+    <div>
+      <button class="note-btn" onclick="toggleNote(2)">
+        ♡ One more thing
+      </button>
+      <div class="note-content" id="note2">
+        Thank you for every laugh, every random conversation,
+        and every memory. They mean more than you probably realize.
+      </div>
+    </div>
 
-<button onclick="showNote(3)">My wish for you</button>
-<div class="note" id="note3">
-I hope life gives you a million reasons to smile.
-Keep shining, Jojo!
-</div>
+    <div>
+      <button class="note-btn" onclick="toggleNote(3)">
+        ♡ My wish for you
+      </button>
+      <div class="note-content" id="note3">
+        I hope your next chapter is full of good surprises,
+        beautiful moments, and reasons to smile every day.
+      </div>
+    </div>
+  </div>
 </section>
 
+<!-- BIRTHDAY GIFT -->
 <section>
-<h2>A Little Surprise 🎁</h2>
-<p>There's something waiting for you...</p>
-<button onclick="openGift()">Open Your Gift 💗</button>
-<div class="note" id="gift">
-Surprise! 🎉
+  <p class="section-tag">SOMETHING IS WAITING</p>
+  <h2>Your Birthday Gift 🎁</h2>
 
-Your gift is a reminder that you are appreciated,
-that your friendship means a lot,
-and that I hope we make many more memories together.
+  <div class="gift-area">
+    <span class="gift-icon">🎁</span>
 
-Happy Birthday, Jojo! 💕
-</div>
+    <p class="section-intro" id="giftStatus">
+      This little gift is waiting for your birthday.
+      Come back on March 22, 2027 to open it.
+    </p>
+
+    <button
+      class="main-btn"
+      id="giftButton"
+      onclick="openGift()"
+      disabled>
+      Locked Until Your Birthday 🔒
+    </button>
+
+    <div id="giftMessage">
+      <h2>Happy Birthday, Jojo! 💗</h2>
+
+      Today is your day, and I hope it becomes one of the
+      happiest days of your year.
+
+      I hope you get everything you've been wishing for,
+      that you laugh a lot, and that you make beautiful
+      memories you'll always remember.
+
+      This little website is just a small reminder that
+      your friendship is appreciated and that I'm glad
+      we got to know each other.
+
+      Thank you for being part of so many good memories.
+
+      I hope we have many more laughs, conversations,
+      and moments ahead.
+
+      Enjoy your day, Jojo. You deserve the best.
+
+      <br><br>
+      <strong style="color:#f5a9ca">
+        Happy Birthday ♡
+        <br>From Adam
+      </strong>
+    </div>
+  </div>
 </section>
 
-<footer>
-Made with care by Adam
-<div class="heart">♡</div>
+<footer class="footer">
+  <div class="heart">♡</div>
+  Made with care by Adam.
+  <br>
+  A little world, just for Jojo.
+  <br>
+  <span style="color:#e8c994">March 22, 2027</span>
 </footer>
 
 <script>
+/* PASSWORD */
 function unlockSite(){
-const password=document.getElementById("passwordInput").value;
+  const value = document.getElementById("passwordInput").value;
 
-if(password==="Jojo2203"){
-document.getElementById("lockScreen").style.display="none";
-}else{
-document.getElementById("errorMessage").innerText=
-"Wrong password! Try again 💗";
-}
+  if(value === "Jojo2203"){
+    document.getElementById("lockScreen").style.display = "none";
+    document.body.style.overflowX = "hidden";
+  } else {
+    document.getElementById("errorMessage").textContent =
+      "That isn't the right password. Try again ♡";
+  }
 }
 
 document.getElementById("passwordInput")
-.addEventListener("keydown",function(event){
-if(event.key==="Enter")unlockSite();
+.addEventListener("keydown", function(event){
+  if(event.key === "Enter") unlockSite();
 });
 
-const birthday=new Date("March 22, 2027 00:00:00").getTime();
+/* COUNTDOWN */
+const birthday = new Date(2027, 2, 22, 0, 0, 0);
 
 function updateCountdown(){
-const now=new Date().getTime();
-const distance=birthday-now;
+  const now = new Date();
+  const distance = birthday.getTime() - now.getTime();
 
-if(distance<=0){
-document.getElementById("countdown").innerText=
-"Happy Birthday, Jojo! 🎂";
-return;
+  if(distance <= 0){
+    document.getElementById("countdownCaption").textContent =
+      "It's your special day! Happy Birthday, Jojo! ♡";
+
+    document.getElementById("days").textContent = "00";
+    document.getElementById("hours").textContent = "00";
+    document.getElementById("minutes").textContent = "00";
+    document.getElementById("seconds").textContent = "00";
+
+    document.getElementById("giftStatus").textContent =
+      "Your birthday is here! Your gift is ready.";
+
+    const giftButton = document.getElementById("giftButton");
+    giftButton.disabled = false;
+    giftButton.textContent = "Open Your Birthday Gift 🎁";
+    return;
+  }
+
+  document.getElementById("days").textContent =
+    Math.floor(distance / 86400000);
+
+  document.getElementById("hours").textContent =
+    Math.floor((distance % 86400000) / 3600000);
+
+  document.getElementById("minutes").textContent =
+    Math.floor((distance % 3600000) / 60000);
+
+  document.getElementById("seconds").textContent =
+    Math.floor((distance % 60000) / 1000);
 }
 
-const days=Math.floor(distance/(1000*60*60*24));
-const hours=Math.floor((distance%(1000*60*60*24))/(1000*60*60));
-const minutes=Math.floor((distance%(1000*60*60))/(1000*60));
-const seconds=Math.floor((distance%(1000*60))/1000);
-
-document.getElementById("countdown").innerText=
-`${days} Days : ${hours} Hours : ${minutes} Minutes : ${seconds} Seconds`;
-}
-
-setInterval(updateCountdown,1000);
 updateCountdown();
+setInterval(updateCountdown, 1000);
 
-function showNote(number){
-const note=document.getElementById("note"+number);
-note.style.display=
-note.style.display==="block"?"none":"block";
+/* NOTES */
+function toggleNote(number){
+  const note = document.getElementById("note" + number);
+  note.style.display =
+    note.style.display === "block" ? "none" : "block";
 }
 
+/* GIFT */
 function openGift(){
-document.getElementById("gift").style.display="block";
+  const now = new Date();
+
+  const birthdayReached =
+    now.getFullYear() > 2027 ||
+    (now.getFullYear() === 2027 && now.getMonth() > 2) ||
+    (now.getFullYear() === 2027 && now.getMonth() === 2 && now.getDate() >= 22);
+
+  if(!birthdayReached) return;
+
+  document.getElementById("giftMessage").style.display = "block";
+  document.getElementById("giftButton").textContent =
+    "Your Gift Is Open ♡";
+
+  document.getElementById("giftMessage").scrollIntoView({
+    behavior:"smooth",
+    block:"center"
+  });
 }
 </script>
 
