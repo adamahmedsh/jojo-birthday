@@ -1,1 +1,420 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jojo's Little World ♡</title>
+<style>
+:root {
+  --pink:#ffb7d5;
+  --light:#ffe8f2;
+  --navy:#101a3a;
+  --blue:#263765;
+  --text:#29314c;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:Georgia,serif;
+  background:#fff9fc;
+  color:var(--text);
+}
+header{
+  min-height:95vh;
+  display:grid;
+  place-items:center;
+  text-align:center;
+  padding:35px 20px;
+  color:white;
+  background:
+    radial-gradient(circle at 20% 20%,#75527e,transparent 35%),
+    linear-gradient(145deg,#101a3a,#263765 65%,#b85e91);
+}
+.hero{max-width:750px}
+.eyebrow{
+  letter-spacing:4px;
+  text-transform:uppercase;
+  font:12px Arial;
+  color:#ffd8e9;
+}
+.heart{font-size:30px;color:var(--pink)}
+h1{
+  font-size:clamp(48px,10vw,90px);
+  line-height:1;
+  color:#fff0f7;
+  margin:20px 0;
+}
+.hero p{
+  font:16px/1.9 Arial;
+  color:#f5eaf2;
+  max-width:560px;
+  margin:20px auto;
+}
+.btn{
+  display:inline-block;
+  border:0;
+  border-radius:30px;
+  padding:14px 23px;
+  margin:8px 4px;
+  background:var(--pink);
+  color:var(--navy);
+  font-weight:bold;
+  cursor:pointer;
+  text-decoration:none;
+}
+.btn.outline{
+  background:transparent;
+  border:1px solid white;
+  color:white;
+}
+section{
+  max-width:1000px;
+  margin:auto;
+  padding:75px 20px;
+}
+.kicker{
+  text-align:center;
+  text-transform:uppercase;
+  letter-spacing:3px;
+  font:11px Arial;
+  color:#bd6791;
+}
+h2{
+  text-align:center;
+  color:var(--navy);
+  font-size:clamp(30px,5vw,45px);
+  margin:12px 0 30px;
+}
+.letter{
+  background:white;
+  border:1px solid #f4d6e4;
+  border-radius:24px;
+  padding:clamp(25px,5vw,45px);
+  box-shadow:0 15px 45px #25376512;
+  font:15px/2 Arial;
+}
+.signature{
+  font:italic 22px Georgia;
+  color:#a64e7a;
+}
+.count-wrap{
+  background:var(--navy);
+  color:white;
+  border-radius:25px;
+  padding:40px 15px;
+  text-align:center;
+}
+.countdown{
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:12px;
+  margin-top:25px;
+}
+.time{
+  background:#ffffff12;
+  border:1px solid #ffffff25;
+  border-radius:15px;
+  min-width:80px;
+  padding:17px 12px;
+}
+.time strong{
+  display:block;
+  color:var(--pink);
+  font:bold 30px Arial;
+}
+.time span{
+  font:11px Arial;
+  text-transform:uppercase;
+  color:#eee;
+}
+.gallery{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
+  gap:16px;
+}
+.photo{
+  height:270px;
+  position:relative;
+  display:grid;
+  place-items:center;
+  text-align:center;
+  overflow:hidden;
+  border:2px dashed #e8a8c5;
+  border-radius:22px;
+  background:linear-gradient(145deg,#fff0f7,#e8eafa);
+  color:#74516b;
+  font:14px Arial;
+}
+.photo img{
+  position:absolute;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+.photo input{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  opacity:0;
+  cursor:pointer;
+}
+.photo span{padding:20px;pointer-events:none}
+.quiz{
+  background:#f8eaf2;
+  border-radius:25px;
+  padding:clamp(22px,5vw,40px);
+}
+.question{
+  font:bold 18px/1.6 Arial;
+  color:var(--navy);
+  margin:20px 0;
+}
+.answers{display:grid;gap:10px}
+.answer{
+  padding:14px;
+  border:1px solid #e3b4ca;
+  border-radius:13px;
+  background:white;
+  color:var(--text);
+  text-align:left;
+  cursor:pointer;
+}
+.answer.selected{
+  background:var(--navy);
+  color:white;
+}
+.progress{font:12px Arial;color:#75546a}
+.result{
+  display:none;
+  text-align:center;
+  line-height:1.8;
+  font:15px/1.8 Arial;
+}
+footer{
+  padding:35px 15px;
+  text-align:center;
+  background:var(--navy);
+  color:#f5ddeb;
+  font:13px Arial;
+}
+footer span{color:var(--pink)}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hero">
+    <div class="eyebrow">A little place made just for you</div>
+    <div class="heart">♡</div>
+    <h1>Jojo's<br>Little World</h1>
+    <p>
+      Some people make ordinary days feel a little more special.
+      This tiny corner of the internet is a reminder that you are one of them.
+    </p>
+    <a class="btn" href="#letter">Open your surprise</a>
+    <a class="btn outline" href="#memories">Our memories</a>
+  </div>
+</header>
+
+<section id="letter">
+  <div class="kicker">A note for you</div>
+  <h2>A little reminder ♡</h2>
+  <div class="letter">
+    <p>Dear Jojo,</p>
+    <p>
+      I hope life gives you a thousand reasons to smile,
+      people who understand your quiet moments, and memories
+      that stay beautiful for years.
+    </p>
+    <p>
+      Keep being your own kind of wonderful.
+      I hope you get to try new things, discover places you love,
+      and collect moments that make you genuinely happy.
+    </p>
+    <p>
+      No pressure and no big speech — just a small reminder
+      that I'm really glad we know each other.
+      You deserve good days, kind people, and all the little
+      things that make life feel lighter.
+    </p>
+    <p class="signature">Happy Birthday, Jojo. ♡</p>
+    <p>— Adam</p>
+  </div>
+</section>
+
+<section>
+  <div class="count-wrap">
+    <div class="kicker" style="color:#ffc9e0">Save the date</div>
+    <h2 style="color:white;margin-bottom:8px">Your special day</h2>
+    <div style="font:14px Arial;color:#eee">March 22, 2027</div>
+    <div class="countdown" id="countdown"></div>
+  </div>
+</section>
+
+<section id="memories">
+  <div class="kicker">Little moments</div>
+  <h2>A place for our memories</h2>
+  <p style="text-align:center;font:14px/1.7 Arial;color:#68708a">
+    Add your favourite photos here. Tap any frame to choose a picture.
+  </p>
+  <div class="gallery">
+    <label class="photo">
+      <span>♡<br><br>Add a favourite memory</span>
+      <input type="file" accept="image/*" onchange="addPhoto(this)">
+    </label>
+    <label class="photo">
+      <span>♡<br><br>A moment worth keeping</span>
+      <input type="file" accept="image/*" onchange="addPhoto(this)">
+    </label>
+    <label class="photo">
+      <span>♡<br><br>One more little memory</span>
+      <input type="file" accept="image/*" onchange="addPhoto(this)">
+    </label>
+  </div>
+</section>
+
+<section id="quiz">
+  <div class="kicker">Just for fun</div>
+  <h2>The Jojo Quiz</h2>
+  <div class="quiz">
+    <div id="quizArea">
+      <div class="progress" id="progress"></div>
+      <div class="question" id="question"></div>
+      <div class="answers" id="answers"></div>
+      <button class="btn" id="next" disabled>Next →</button>
+    </div>
+    <div class="result" id="result">
+      <div class="heart">♡</div>
+      <h2>That's so you!</h2>
+      <p id="resultText"></p>
+      <button class="btn" onclick="restartQuiz()">Play again</button>
+    </div>
+  </div>
+</section>
+
+<footer>Made with <span>♡</span> and care by Adam</footer>
+
+<script>
+const target = new Date("2027-03-22T00:00:00");
+
+function tick(){
+  const diff = Math.max(0,target-new Date());
+  const values = [
+    Math.floor(diff/86400000),
+    Math.floor(diff/3600000)%24,
+    Math.floor(diff/60000)%60,
+    Math.floor(diff/1000)%60
+  ];
+  const labels = ["Days","Hours","Minutes","Seconds"];
+  document.getElementById("countdown").innerHTML =
+    values.map((v,i)=>`
+      <div class="time">
+        <strong>${v}</strong>
+        <span>${labels[i]}</span>
+      </div>`).join("");
+}
+tick();
+setInterval(tick,1000);
+
+function addPhoto(input){
+  if(!input.files || !input.files[0]) return;
+  const box=input.parentElement;
+  let img=box.querySelector("img");
+  if(!img){
+    img=document.createElement("img");
+    box.appendChild(img);
+  }
+  img.src=URL.createObjectURL(input.files[0]);
+  box.querySelector("span").style.display="none";
+}
+
+const questions=[
+ ["Your perfect free evening?",[
+  "Music, snacks and relaxing",
+  "A little café and good conversations",
+  "Going somewhere new",
+  "A cosy night with a favourite show"
+ ]],
+ ["What kind of gift feels most special?",[
+  "Something handmade just for me",
+  "Something thoughtful and useful",
+  "A surprise experience",
+  "A handwritten note"
+ ]],
+ ["Pick a colour for your mood today:",[
+  "Pink","Navy blue","Black","A little bit of everything"
+ ]],
+ ["When you need a reset, you prefer…",[
+  "Quiet time by myself",
+  "Talking to someone I trust",
+  "A walk and fresh air",
+  "Music and daydreaming"
+ ]],
+ ["One wish for your next year:",[
+  "More happy memories",
+  "New places and experiences",
+  "Peace and confidence",
+  "Good people around me"
+ ]]
+];
+
+let index=0;
+let chosen=[];
+
+function render(){
+  document.getElementById("progress").textContent=
+    `Question ${index+1} of ${questions.length}`;
+  document.getElementById("question").textContent=questions[index][0];
+  document.getElementById("answers").innerHTML=
+    questions[index][1].map((answer,i)=>`
+      <button class="answer ${chosen[index]===i?"selected":""}"
+      onclick="pick(${i})">${answer}</button>
+    `).join("");
+  const next=document.getElementById("next");
+  next.disabled=chosen[index]===undefined;
+  next.textContent=index===questions.length-1?"See my result ♡":"Next →";
+}
+
+function pick(i){
+  chosen[index]=i;
+  render();
+}
+
+document.getElementById("next").onclick=()=>{
+  if(chosen[index]===undefined)return;
+  if(index<questions.length-1){
+    index++;
+    render();
+  }else{
+    document.getElementById("quizArea").style.display="none";
+    document.getElementById("result").style.display="block";
+    const types=[
+      "thoughtful",
+      "curious",
+      "calm",
+      "full of surprises"
+    ];
+    const score=chosen.reduce((a,b)=>a+b,0);
+    document.getElementById("resultText").textContent=
+      `Your answers say you're ${types[score%types.length]} in your own way. Keep discovering what makes you happy — your next chapter is yours to write. ♡`;
+  }
+};
+
+function restartQuiz(){
+  index=0;
+  chosen=[];
+  document.getElementById("quizArea").style.display="block";
+  document.getElementById("result").style.display="none";
+  render();
+}
+render();
+</script>
+
+</body>
+</html>
+
+
