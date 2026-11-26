@@ -960,17 +960,25 @@ I hope one day, when you look back at this little surprise, you remember that so
 <section class="jx-section" id="jxWishes">
   <p class="jx-tag">A PLACE FOR YOUR DREAMS</p>
   <h2>Your Wish Corner ⭐</h2>
+
   <p class="jx-desc">
     Write a wish, a goal or something you'd love to do.
-    Notes are saved only in this browser on this device.
+  </p>
+
+  <p class="jx-desc">
+    ♡ If you choose to send your wish, Adam will be able to read it.
+    Nothing is sent until you press the send button.
   </p>
 
   <textarea class="jx-wish" id="jxWishInput"
     maxlength="300"
     placeholder="One little wish I have..."></textarea>
 
-  <button class="jx-btn" id="jxSaveWish">Save My Wish</button>
-  <div id="jxWishList"></div>
+  <button class="jx-btn" id="jxSaveWish">
+    Send My Wish to Adam ♡
+  </button>
+
+  <p id="jxWishStatus" class="jx-desc" aria-live="polite"></p>
 </section>
 
 <div class="jx-lightbox" id="jxLightbox">
