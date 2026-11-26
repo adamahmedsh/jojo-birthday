@@ -337,9 +337,7 @@ audio {
   display:block;
   margin-bottom:20px;
   animation:float 3s infinite;
-}
-
-#giftButton:disabled {
+}#giftButton:disabled {
   opacity:.45;
   cursor:not-allowed;
   transform:none;
@@ -392,124 +390,57 @@ audio {
 }
 
 /* EXTRA EXPERIENCES + CONSENT */
-.consent-panel {
-  position:fixed;
-  inset:0;
-  z-index:11000;
-  background:#080e20eF;
-  display:none;
-  align-items:center;
-  justify-content:center;
-  padding:20px;
-}
+.consent-panel{position:fixed;inset:0;z-index:11000;background:#080e20eF;display:none;align-items:center;justify-content:center;padding:20px}
+.consent-card{width:min(520px,100%);background:#182443;border:1px solid #f5a9ca88;border-radius:22px;padding:26px;box-shadow:0 20px 70px #0008}
+.consent-card h2{margin-bottom:12px}.consent-card p{line-height:1.8;color:#f3dce8;margin-bottom:16px}
+.consent-actions{display:flex;gap:10px;flex-wrap:wrap}.secondary-btn,.extra-btn{padding:12px 18px;border-radius:24px;border:1px solid #f5a9ca77;background:#ffffff0c;color:#ffe5f0;cursor:pointer}
+.extra-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;margin-top:20px}
+.extra-card{border:1px solid #f5a9ca44;background:#ffffff09;border-radius:17px;padding:18px}
+.extra-card h3{font-family:'Playfair Display',serif;color:var(--pink);font-size:21px;margin-bottom:10px}
+.extra-card p{color:#f2dce8;line-height:1.8}
+.extra-card button{margin-top:12px}
+.extra-result{display:none;margin-top:13px;padding:14px;border-radius:12px;background:#f5a9ca15;color:#ffe5f0;line-height:1.8}
+.quiz-choice{display:block;width:100%;text-align:left;margin:8px 0;padding:12px;border-radius:12px;border:1px solid #f5a9ca55;background:#ffffff0b;color:#fff;cursor:pointer}
+.star-board{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px}
+.star-pick{font-size:32px;background:transparent;border:0;cursor:pointer;filter:grayscale(1);opacity:.55}
+.star-pick.found{filter:none;opacity:1}
+@media(max-width:520px){.consent-actions>*{width:100%}}
 
-.consent-card {
-  width:min(520px,100%);
-  background:#182443;
-  border:1px solid #f5a9ca88;
-  border-radius:22px;
-  padding:26px;
-  box-shadow:0 20px 70px #0008;
-}
 
-.consent-card h2 { margin-bottom:12px; }
+/* JOJO WORLD EXPANSION */
+.jx-section{width:min(900px,91%);margin:35px auto;padding:clamp(24px,5vw,45px);background:linear-gradient(145deg,#ffffff10,#ffffff05);border:1px solid #f5a9ca44;border-radius:25px;color:#fff9fc;box-shadow:0 18px 50px #00000020}
+.jx-tag{color:#e8c994;letter-spacing:4px;font-size:10px;margin-bottom:12px}
+.jx-section h2{color:#f5a9ca;font-family:'Playfair Display',serif;font-size:clamp(27px,5vw,38px);margin-bottom:15px}
+.jx-desc{color:#e6dce7;line-height:1.9;margin-bottom:20px}
+.jx-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:13px}
+.jx-card{background:#ffffff0a;border:1px solid #f5a9ca44;border-radius:16px;padding:18px}
+.jx-card h3{color:#f5a9ca;font-family:'Playfair Display',serif;margin-bottom:9px}
+.jx-btn{background:#f5a9ca;color:#10182f;border:0;border-radius:25px;padding:12px 18px;font-weight:bold;cursor:pointer;margin:5px 4px 5px 0;transition:.2s}
+.jx-btn:hover{transform:translateY(-2px);box-shadow:0 7px 20px #f5a9ca30}
+.jx-btn.alt{background:#ffffff12;color:#ffe5f0;border:1px solid #f5a9ca66}
+.jx-result{display:none;background:#f5a9ca12;border-radius:13px;padding:17px;margin-top:14px;color:#ffe5f0;line-height:1.9;animation:appear .4s}
+.jx-timeline{border-left:2px solid #f5a9ca66;margin:25px 0 10px 10px;padding-left:24px}
+.jx-time{position:relative;padding:0 0 25px;line-height:1.8;color:#e6dce7}
+.jx-time:before{content:"♡";position:absolute;left:-37px;top:0;color:#f5a9ca;background:#10182f}
+.jx-time strong{color:#f5a9ca;display:block;margin-bottom:7px}
+.jx-jar{font-size:85px;text-align:center;margin:15px}
+.jx-match{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-top:20px}
+.jx-tile{min-height:75px;border-radius:13px;border:1px solid #f5a9ca66;background:#182443;color:#f5a9ca;font-size:28px;cursor:pointer}
+.jx-tile.open,.jx-tile.done{background:#f5a9ca;color:#10182f}
+.jx-progress{height:9px;background:#ffffff18;border-radius:20px;overflow:hidden;margin:15px 0}
+.jx-progress span{display:block;height:100%;width:0;background:#f5a9ca;transition:.3s}
+.jx-journey{display:grid;gap:12px}
+.jx-step{padding:16px;border:1px solid #f5a9ca44;border-radius:14px;background:#ffffff08;line-height:1.8}
+.jx-step b{color:#f5a9ca}
+.jx-wish{width:100%;min-height:100px;background:#10182f;color:white;border:1px solid #f5a9ca66;border-radius:13px;padding:14px;font:inherit;resize:vertical}
+.jx-wish-item{padding:12px;border-bottom:1px solid #ffffff20;color:#ffe5f0;line-height:1.7;overflow-wrap:anywhere}
+.jx-lightbox{position:fixed;inset:0;background:#080e20ee;z-index:20000;display:none;align-items:center;justify-content:center;padding:20px}
+.jx-lightbox img{max-width:95%;max-height:80vh;object-fit:contain;border-radius:15px;border:2px solid #f5a9ca}
+.jx-lightbox button{position:absolute;top:20px;right:22px}
+.jx-nav{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:15px auto;width:90%}
+.jx-nav a{color:#ffe5f0;text-decoration:none;border:1px solid #f5a9ca55;border-radius:20px;padding:9px 13px;font-size:12px}
+@media(max-width:450px){.jx-match{gap:6px}.jx-tile{min-height:62px;font-size:23px}}
 
-.consent-card p {
-  line-height:1.8;
-  color:#f3dce8;
-  margin-bottom:16px;
-}
-
-.consent-actions {
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-}
-
-.secondary-btn,.extra-btn {
-  padding:12px 18px;
-  border-radius:24px;
-  border:1px solid #f5a9ca77;
-  background:#ffffff0c;
-  color:#ffe5f0;
-  cursor:pointer;
-}
-
-.extra-grid {
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
-  gap:14px;
-  margin-top:20px;
-}
-
-.extra-card {
-  border:1px solid #f5a9ca44;
-  background:#ffffff09;
-  border-radius:17px;
-  padding:18px;
-}
-
-.extra-card h3 {
-  font-family:'Playfair Display',serif;
-  color:var(--pink);
-  font-size:21px;
-  margin-bottom:10px;
-}
-
-.extra-card p {
-  color:#f2dce8;
-  line-height:1.8;
-}
-
-.extra-card button { margin-top:12px; }
-
-.extra-result {
-  display:none;
-  margin-top:13px;
-  padding:14px;
-  border-radius:12px;
-  background:#f5a9ca15;
-  color:#ffe5f0;
-  line-height:1.8;
-}
-
-.quiz-choice {
-  display:block;
-  width:100%;
-  text-align:left;
-  margin:8px 0;
-  padding:12px;
-  border-radius:12px;
-  border:1px solid #f5a9ca55;
-  background:#ffffff0b;
-  color:#fff;
-  cursor:pointer;
-}
-
-.star-board {
-  display:flex;
-  gap:12px;
-  flex-wrap:wrap;
-  margin-top:12px;
-}
-
-.star-pick {
-  font-size:32px;
-  background:transparent;
-  border:0;
-  cursor:pointer;
-  filter:grayscale(1);
-  opacity:.55;
-}
-
-.star-pick.found {
-  filter:none;
-  opacity:1;
-}
-
-@media(max-width:520px) {
-  .consent-actions>* { width:100%; }
-}
 </style>
 </head>
 
@@ -553,7 +484,9 @@ audio {
     This little place was made to celebrate you, the memories,
     the laughs, and all the little things worth remembering.
   </p>
-</section><!-- MAIN LETTER -->
+</section>
+
+<!-- MAIN LETTER -->
 <section>
   <p class="section-tag">WORDS FROM THE HEART</p>
   <h2>A Letter For You 💌</h2>
@@ -742,8 +675,7 @@ I hope one day, when you look back at this little surprise, you remember that so
   <p class="section-tag">SOMETHING IS WAITING</p>
   <h2>Your Birthday Gift 🎁</h2>
 
-  <div class="gift-area">
-    <span class="gift-icon">🎁</span>
+  <div class="gift-area">    <span class="gift-icon">🎁</span>
 
     <p class="section-intro" id="giftStatus">
       This little gift is waiting for your birthday.
@@ -783,20 +715,20 @@ I hope one day, when you look back at this little surprise, you remember that so
       </strong>
     </div>
   </div>
-</section><!-- PRIVACY / ACTIVITY NOTICE -->
-<div class="consent-panel" id="consentPanel"
-     role="dialog" aria-modal="true"
-     aria-labelledby="consentTitle">
+</section>
 
+<!-- PRIVACY NOTICE -->
+<div class="consent-panel" id="consentPanel" role="dialog"
+  aria-modal="true" aria-labelledby="consentTitle">
   <div class="consent-card">
     <p class="section-tag">A QUICK PRIVACY NOTE</p>
     <h2 id="consentTitle">Before you explore ♡</h2>
 
     <p>
-      This website can record a small number of interactions,
-      such as opening the gallery, playing the song, or opening
-      the birthday gift, so Adam can see which parts of the
-      surprise were visited.
+      This website records a small number of interactions
+      (such as opening the gallery, playing the song, or
+      opening the gift) so the creator can see which parts
+      of the surprise were visited.
     </p>
 
     <p>
@@ -805,8 +737,8 @@ I hope one day, when you look back at this little surprise, you remember that so
     </p>
 
     <p>
-      You can continue without activity tracking at any time
-      by choosing the second option.
+      You can continue without activity tracking by
+      choosing "Continue without tracking".
     </p>
 
     <div class="consent-actions">
@@ -821,7 +753,6 @@ I hope one day, when you look back at this little surprise, you remember that so
   </div>
 </div>
 
-
 <!-- EXTRA INTERACTIVE SECTIONS -->
 <section id="littleExtras">
   <p class="section-tag">A FEW LITTLE SURPRISES</p>
@@ -835,101 +766,218 @@ I hope one day, when you look back at this little surprise, you remember that so
     <div class="extra-card">
       <h3>A Secret Note 💌</h3>
       <p>A tiny reminder waiting behind a button.</p>
-
       <button class="extra-btn" onclick="revealSecret()">
         Reveal the note
       </button>
-
       <div class="extra-result" id="secretResult">
         You're one of those people who make ordinary days
         feel a little more special. Your presence matters. ♡
       </div>
     </div>
 
-
     <div class="extra-card">
       <h3>Open When... 🌷</h3>
       <p>Choose the note that matches the moment.</p>
-
       <button class="extra-btn" onclick="openWhen('sad')">
         When you need encouragement
       </button>
-
       <button class="extra-btn" onclick="openWhen('bored')">
         When you're bored
       </button>
-
       <button class="extra-btn" onclick="openWhen('memory')">
         When you remember this day
       </button>
-
       <div class="extra-result" id="openWhenResult"></div>
     </div>
-
 
     <div class="extra-card">
       <h3>A Tiny Quiz 🎀</h3>
       <p>Pick the answer that feels most like you. No scores, just for fun.</p>
-
       <button class="extra-btn" onclick="startMiniQuiz()">
         Start the quiz
       </button>
-
       <div class="extra-result" id="quizResult"></div>
     </div>
-
 
     <div class="extra-card">
       <h3>Five Little Stars ⭐</h3>
       <p>Tap all five stars to reveal a final message.</p>
-
       <div class="star-board" id="starBoard">
-        <button class="star-pick" aria-label="Star 1"
-          onclick="collectStar(this)">★</button>
-
-        <button class="star-pick" aria-label="Star 2"
-          onclick="collectStar(this)">★</button>
-
-        <button class="star-pick" aria-label="Star 3"
-          onclick="collectStar(this)">★</button>
-
-        <button class="star-pick" aria-label="Star 4"
-          onclick="collectStar(this)">★</button>
-
-        <button class="star-pick" aria-label="Star 5"
-          onclick="collectStar(this)">★</button>
+        <button class="star-pick" onclick="collectStar(this)">★</button>
+        <button class="star-pick" onclick="collectStar(this)">★</button>
+        <button class="star-pick" onclick="collectStar(this)">★</button>
+        <button class="star-pick" onclick="collectStar(this)">★</button>
+        <button class="star-pick" onclick="collectStar(this)">★</button>
       </div>
-
       <div class="extra-result" id="starsResult">
         You found all five! Keep a little room in every day
         for joy, laughter, and lovely surprises. ♡
       </div>
     </div>
 
-
     <div class="extra-card">
       <h3>A Note From The Future ✉️</h3>
       <p>For a day when you come back to this little page.</p>
-
       <button class="extra-btn" onclick="revealFuture()">
         Read the future note
       </button>
-
       <div class="extra-result" id="futureResult">
         Hey Jojo, I hope life has been kind to you.
         I hope you've grown, learned, laughed, and found
-        new reasons to be proud of yourself.
-
-        Whatever changed, I hope you still make time
-        for the little things that make you happy. ♡
+        new reasons to be proud of yourself. ♡
       </div>
     </div>
 
   </div>
 </section>
 
+<!-- EXPANDED JOJO WORLD -->
+<nav class="jx-nav">
+  <a href="#jxTimeline">Memories</a>
+  <a href="#jxJar">Happiness Jar</a>
+  <a href="#jxOpen">Open When</a>
+  <a href="#jxGame">Memory Game</a>
+  <a href="#jxJourney">Birthday Journey</a>
+  <a href="#jxWishes">Wish Corner</a>
+</nav>
 
-<!-- FOOTER -->
+<section class="jx-section" id="jxTimeline">
+  <p class="jx-tag">OUR LITTLE STORY</p>
+  <h2>A Timeline Of Little Moments ♡</h2>
+  <p class="jx-desc">
+    A place for the moments that deserve to be remembered.
+    These are starter entries you can personalize with real memories.
+  </p>
+
+  <div class="jx-timeline">
+    <div class="jx-time">
+      <strong>The Beginning</strong>
+      A new friendship and the first conversations.
+    </div>
+
+    <div class="jx-time">
+      <strong>The Random Moments</strong>
+      The jokes, unexpected talks and little surprises.
+    </div>
+
+    <div class="jx-time">
+      <strong>The Memories</strong>
+      Small moments that became worth keeping.
+    </div>
+
+    <div class="jx-time">
+      <strong>What's Next?</strong>
+      More chapters, stories and new experiences.
+    </div>
+  </div>
+</section>
+
+<section class="jx-section" id="jxJar">
+  <p class="jx-tag">PICK A LITTLE HAPPINESS</p>
+  <h2>The Happiness Jar 🌷</h2>
+  <p class="jx-desc">
+    There are 30 little notes inside. Tap the jar and discover one.
+  </p>
+
+  <div class="jx-jar">🫙</div>
+
+  <div style="text-align:center">
+    <button class="jx-btn" id="jxDraw">Pick a note ✨</button>
+  </div>
+
+  <div class="jx-result" id="jxNote"></div>
+  <p class="jx-desc" id="jxNoteCount" style="text-align:center">
+    30 little notes waiting
+  </p>
+</section>
+
+<section class="jx-section" id="jxOpen">
+  <p class="jx-tag">FOR DIFFERENT MOMENTS</p>
+  <h2>Open When... 💌</h2>
+  <p class="jx-desc">Choose the message that matches the moment.</p>
+  <div class="jx-grid" id="jxOpenGrid"></div>
+  <div class="jx-result" id="jxOpenResult"></div>
+</section>
+
+<section class="jx-section" id="jxGame">
+  <p class="jx-tag">A LITTLE CHALLENGE</p>
+  <h2>Memory Matching Game 🎮</h2>
+  <p class="jx-desc">
+    Find all six matching pairs. Tap two cards at a time.
+  </p>
+
+  <div class="jx-progress">
+    <span id="jxGameProgress"></span>
+  </div>
+
+  <p id="jxGameStatus" class="jx-desc">
+    0 of 6 pairs found
+  </p>
+
+  <div class="jx-match" id="jxMatchBoard"></div>
+
+  <button class="jx-btn alt" id="jxRestart">
+    Play Again ↻
+  </button>
+
+  <div class="jx-result" id="jxGameWin">
+    You found them all! You're a champion of little surprises. ♡
+  </div>
+</section>
+
+<section class="jx-section">
+  <p class="jx-tag">A RANDOM LITTLE MOMENT</p>
+  <h2>Surprise Button 🎀</h2>
+  <p class="jx-desc">You never know what will appear next.</p>
+
+  <button class="jx-btn" id="jxSurprise">Surprise Me!</button>
+  <div class="jx-result" id="jxSurpriseResult"></div>
+</section>
+
+<section class="jx-section" id="jxJourney">
+  <p class="jx-tag">THE ROAD TO MARCH 22</p>
+  <h2>Your Birthday Journey 🎂</h2>
+  <p class="jx-desc">A little journey leading up to your special day.</p>
+
+  <div class="jx-journey">
+    <div class="jx-step">
+      🌸 <b>Today</b><br>
+      Enjoy the little things around you.
+    </div>
+
+    <div class="jx-step">
+      ✨ <b>Before your birthday</b><br>
+      Collect new memories and reasons to smile.
+    </div>
+
+    <div class="jx-step">
+      🎀 <b>March 22, 2027</b><br>
+      Your special day. A little surprise is waiting.
+    </div>
+  </div>
+</section>
+
+<section class="jx-section" id="jxWishes">
+  <p class="jx-tag">A PLACE FOR YOUR DREAMS</p>
+  <h2>Your Wish Corner ⭐</h2>
+  <p class="jx-desc">
+    Write a wish, a goal or something you'd love to do.
+    Notes are saved only in this browser on this device.
+  </p>
+
+  <textarea class="jx-wish" id="jxWishInput"
+    maxlength="300"
+    placeholder="One little wish I have..."></textarea>
+
+  <button class="jx-btn" id="jxSaveWish">Save My Wish</button>
+  <div id="jxWishList"></div>
+</section>
+
+<div class="jx-lightbox" id="jxLightbox">
+  <button class="jx-btn" id="jxCloseLightbox">Close ✕</button>
+  <img id="jxLargePhoto" alt="Selected memory">
+</div>
+
 <footer class="footer">
   <div class="heart">♡</div>
   Made with care by Adam.
@@ -937,20 +985,68 @@ I hope one day, when you look back at this little surprise, you remember that so
   A little world, just for Jojo.
   <br>
   <span style="color:#e8c994">March 22, 2027</span>
-</footer>
-
-
-<!-- FIREBASE LIBRARIES -->
+</footer><!-- FIREBASE SDK -->
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
 
-
 <script>
+// =====================================
+// PASSWORD & WEBSITE
+// =====================================
 
-/* ==================================
-   FIREBASE CONFIGURATION
-================================== */
+const SITE_PASSWORD = "Jojo2203";
+let trackingAllowed = false;
+let firebaseDB = null;
+let firebaseAuth = null;
+
+function unlockSite() {
+  const entered = document.getElementById("passwordInput").value;
+
+  if (entered !== SITE_PASSWORD) {
+    document.getElementById("errorMessage").textContent =
+      "That password isn't quite right. Try again ♡";
+    return;
+  }
+
+  document.getElementById("errorMessage").textContent = "";
+
+  const savedConsent = localStorage.getItem("jojoTrackingConsent");
+
+  if (savedConsent === "yes" || savedConsent === "no") {
+    trackingAllowed = savedConsent === "yes";
+    document.getElementById("lockScreen").style.display = "none";
+    initializeTracking();
+    if (trackingAllowed) logEvent("site_visit");
+  } else {
+    document.getElementById("consentPanel").style.display = "flex";
+  }
+}
+
+document.getElementById("passwordInput").addEventListener("keydown", function(e) {
+  if (e.key === "Enter") unlockSite();
+});
+
+function chooseTracking(allowed) {
+  trackingAllowed = allowed;
+
+  localStorage.setItem(
+    "jojoTrackingConsent",
+    allowed ? "yes" : "no"
+  );
+
+  document.getElementById("consentPanel").style.display = "none";
+  document.getElementById("lockScreen").style.display = "none";
+
+  if (allowed) {
+    initializeTracking();
+    logEvent("site_visit");
+  }
+}
+
+// =====================================
+// FIREBASE
+// =====================================
 
 const firebaseConfig = {
   apiKey: "AIzaSyB1RCFwXSuvIuzbeQTCAmveaIrGlNbOwK0",
@@ -963,45 +1059,35 @@ const firebaseConfig = {
 };
 
 let firebaseReady = false;
-let activityTracking = false;
-let db = null;
 
-try {
-  if (typeof firebase !== "undefined") {
+function initializeTracking() {
+  if (!trackingAllowed) return;
+
+  try {
+    if (typeof firebase === "undefined") return;
+
     if (!firebase.apps.length) {
       firebase.initializeApp(firebaseConfig);
     }
 
-    db = firebase.firestore();
-    firebaseReady = true;
-  }
-} catch (error) {
-  console.warn("Firebase initialization failed:", error);
-}
+    firebaseAuth = firebase.auth();
+    firebaseDB = firebase.firestore();
 
+    firebaseAuth.signInAnonymously()
+      .then(() => {
+        firebaseReady = true;
+      })
+      .catch(error => {
+        console.warn("Anonymous sign-in unavailable:", error);
+      });
 
-/* ==================================
-   ACTIVITY TRACKING
-================================== */
-
-async function startVisitorAuth() {
-  if (!firebaseReady) return false;
-
-  try {
-    if (!firebase.auth().currentUser) {
-      await firebase.auth().signInAnonymously();
-    }
-
-    return true;
   } catch (error) {
-    console.warn("Anonymous authentication failed:", error);
-    return false;
+    console.warn("Firebase unavailable:", error);
   }
 }
 
-
-async function recordEvent(eventName) {
-  if (!activityTracking || !firebaseReady || !db) return;
+function logEvent(eventName) {
+  if (!trackingAllowed || !firebaseReady || !firebaseDB) return;
 
   const allowedEvents = [
     "site_visit",
@@ -1016,358 +1102,547 @@ async function recordEvent(eventName) {
 
   if (!allowedEvents.includes(eventName)) return;
 
-  const authenticated = await startVisitorAuth();
-
-  if (!authenticated) return;
-
-  try {
-    await db.collection("events").add({
-      event: eventName,
-      createdAt: firebase.firestore.FieldValue.serverTimestamp()
-    });
-  } catch (error) {
-    console.warn("Could not save activity:", error);
-  }
-}
-
-
-/* ==================================
-   PRIVACY CHOICE
-================================== */
-
-function chooseTracking(accepted) {
-  const panel = document.getElementById("consentPanel");
-
-  panel.style.display = "none";
-
-  activityTracking = accepted;
-
-  if (accepted) {
-    recordEvent("site_visit");
-    activateLetterTracking();
-  }
-}
-
-
-/* ==================================
-   PASSWORD SCREEN
-================================== */
-
-function unlockSite() {
-  const password = document.getElementById("passwordInput").value;
-  const error = document.getElementById("errorMessage");
-
-  if (password === "Jojo2203") {
-    document.getElementById("lockScreen").style.display = "none";
-
-    document.getElementById("consentPanel").style.display = "flex";
-
-    error.textContent = "";
-  } else {
-    error.textContent =
-      "That isn't the right password. Try again ♡";
-  }
-}
-
-document.getElementById("passwordInput")
-  .addEventListener("keydown", function(event) {
-    if (event.key === "Enter") {
-      unlockSite();
-    }
+  firebaseDB.collection("siteEvents").add({
+    event: eventName,
+    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+  }).catch(error => {
+    console.warn("Event could not be saved:", error);
   });
+}
 
+// =====================================
+// COUNTDOWN
+// =====================================
 
-/* ==================================
-   COUNTDOWN
-================================== */
-
-const birthday = new Date(2027, 2, 22, 0, 0, 0);
+const birthdayDate = new Date(2027, 2, 22, 0, 0, 0);
 
 function updateCountdown() {
   const now = new Date();
-  const distance = birthday.getTime() - now.getTime();
+  const distance = birthdayDate.getTime() - now.getTime();
 
   if (distance <= 0) {
-    document.getElementById("countdownCaption").textContent =
-      "It's your special day! Happy Birthday, Jojo! ♡";
-
     document.getElementById("days").textContent = "00";
     document.getElementById("hours").textContent = "00";
     document.getElementById("minutes").textContent = "00";
     document.getElementById("seconds").textContent = "00";
 
-    document.getElementById("giftStatus").textContent =
-      "Your birthday is here! Your gift is ready.";
+    document.getElementById("countdownCaption").textContent =
+      "It's your special day, Jojo! Happy Birthday! ♡";
 
-    const giftButton = document.getElementById("giftButton");
-
-    giftButton.disabled = false;
-    giftButton.textContent = "Open Your Birthday Gift 🎁";
-
+    updateGiftButton();
     return;
   }
 
-  document.getElementById("days").textContent =
-    Math.floor(distance / 86400000);
+  const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((distance / (1000 * 60 * 60)) % 24);
+  const minutes = Math.floor((distance / (1000 * 60)) % 60);
+  const seconds = Math.floor((distance / 1000) % 60);
 
-  document.getElementById("hours").textContent =
-    Math.floor((distance % 86400000) / 3600000);
+  document.getElementById("days").textContent = days;
+  document.getElementById("hours").textContent = hours;
+  document.getElementById("minutes").textContent = minutes;
+  document.getElementById("seconds").textContent = seconds;
 
-  document.getElementById("minutes").textContent =
-    Math.floor((distance % 3600000) / 60000);
+  updateGiftButton();
+}
 
-  document.getElementById("seconds").textContent =
-    Math.floor((distance % 60000) / 1000);
+function updateGiftButton() {
+  const button = document.getElementById("giftButton");
+  const status = document.getElementById("giftStatus");
+
+  if (new Date() >= birthdayDate) {
+    button.disabled = false;
+    button.textContent = "Open Your Birthday Gift 🎁";
+    status.textContent = "Your special day is here! Your gift is ready.";
+  } else {
+    button.disabled = true;
+    button.textContent = "Locked Until Your Birthday 🔒";
+    status.textContent =
+      "This little gift is waiting for your birthday. Come back on March 22, 2027.";
+  }
 }
 
 updateCountdown();
 setInterval(updateCountdown, 1000);
 
+// =====================================
+// BIRTHDAY GIFT
+// =====================================
 
-/* ==================================
-   HIDDEN NOTES
-================================== */
+function openGift() {
+  if (new Date() < birthdayDate) {
+    updateGiftButton();
+    return;
+  }
+
+  document.getElementById("giftMessage").style.display = "block";
+  document.getElementById("giftButton").style.display = "none";
+  logEvent("gift_open");
+}
+
+// =====================================
+// HIDDEN NOTES
+// =====================================
 
 function toggleNote(number) {
   const note = document.getElementById("note" + number);
 
   note.style.display =
     note.style.display === "block" ? "none" : "block";
+
+  logEvent("letter_open");
 }
-
-
-/* ==================================
-   BIRTHDAY GIFT
-================================== */
-
-function openGift() {
-  const now = new Date();
-
-  const birthdayReached =
-    now.getFullYear() > 2027 ||
-    (
-      now.getFullYear() === 2027 &&
-      now.getMonth() > 2
-    ) ||
-    (
-      now.getFullYear() === 2027 &&
-      now.getMonth() === 2 &&
-      now.getDate() >= 22
-    );
-
-  if (!birthdayReached) return;
-
-  const message = document.getElementById("giftMessage");
-
-  message.style.display = "block";
-
-  document.getElementById("giftButton").textContent =
-    "Your Gift Is Open ♡";
-
-  message.scrollIntoView({
-    behavior: "smooth",
-    block: "center"
-  });
-
-  recordEvent("gift_open");
-}
-
-
-/* ==================================
-   SECRET NOTE
-================================== */
 
 function revealSecret() {
   document.getElementById("secretResult").style.display = "block";
+  logEvent("letter_open");
 }
-
-
-/* ==================================
-   OPEN WHEN NOTES
-================================== */
 
 function openWhen(type) {
   const messages = {
-    sad:
-      "It's okay to have a difficult day. Be gentle with yourself, take things one step at a time, and remember that brighter moments can come again. ♡",
+    sad: "Whatever kind of day you're having, remember that one difficult day doesn't define your whole story. You deserve kindness, patience, and happiness. ♡",
 
-    bored:
-      "Your tiny mission: find one small thing that makes you smile today. A favorite song, a funny video, or a snack can count!",
+    bored: "Here's a tiny challenge: listen to your favorite song, remember one funny moment, and find one new thing that makes you smile today. 🎀",
 
-    memory:
-      "If you're reading this again, I hope this page brings back a kind memory and reminds you that the little moments can matter."
+    memory: "If you're reading this again, I hope it brings back a little smile. Some moments are worth keeping, even when time moves forward. ♡"
   };
 
-  const box = document.getElementById("openWhenResult");
-
-  box.textContent = messages[type];
-
-  box.style.display = "block";
+  const result = document.getElementById("openWhenResult");
+  result.textContent = messages[type] || "";
+  result.style.display = "block";
 }
 
+// =====================================
+// MINI QUIZ
+// =====================================
 
-/* ==================================
-   MINI QUIZ
-================================== */
-
-let quizIndex = 0;
+let quizStep = 0;
 
 const quizQuestions = [
   {
-    q: "Pick the kind of day you'd enjoy most:",
-    a: [
-      "A day full of laughter",
-      "A calm day with no rush",
-      "A little adventure"
+    question: "What makes an ordinary day better?",
+    choices: [
+      "A good conversation",
+      "A little adventure",
+      "A favorite song"
     ]
   },
-
   {
-    q: "Choose a perfect small surprise:",
-    a: [
-      "A thoughtful note",
-      "A favorite song",
-      "A funny memory"
+    question: "Choose your perfect birthday feeling:",
+    choices: [
+      "Lots of laughter",
+      "Beautiful surprises",
+      "Time with favorite people"
     ]
   },
-
   {
-    q: "What should never be missing from a friendship?",
-    a: [
-      "Honesty",
-      "Laughter",
-      "Support"
+    question: "What should the next chapter bring?",
+    choices: [
+      "New memories",
+      "Big achievements",
+      "More happiness"
     ]
   }
 ];
 
-
 function startMiniQuiz() {
-  quizIndex = 0;
-
-  recordEvent("quiz_start");
-
-  showMiniQuestion();
+  quizStep = 0;
+  logEvent("quiz_start");
+  showQuizQuestion();
 }
 
+function showQuizQuestion() {
+  const result = document.getElementById("quizResult");
+  result.style.display = "block";
 
-function showMiniQuestion() {
-  const box = document.getElementById("quizResult");
+  if (quizStep >= quizQuestions.length) {
+    result.innerHTML =
+      "<strong>Quiz complete! ♡</strong><br>" +
+      "Whatever your answers were, I hope your days are full of " +
+      "the things that make you happy.";
 
-  const item = quizQuestions[quizIndex];
+    logEvent("quiz_complete");
+    return;
+  }
 
-  box.style.display = "block";
-  box.innerHTML = "";
+  const q = quizQuestions[quizStep];
 
-  const question = document.createElement("strong");
+  let html = "<strong>" + q.question + "</strong>";
 
-  question.textContent = item.q;
-
-  box.appendChild(question);
-
-  item.a.forEach(answer => {
-    const button = document.createElement("button");
-
-    button.className = "quiz-choice";
-    button.textContent = answer;
-
-    button.onclick = function() {
-      quizIndex++;
-
-      if (quizIndex < quizQuestions.length) {
-        showMiniQuestion();
-      } else {
-        box.textContent =
-          "Thanks for playing! There isn't a right or wrong answer — the best part is choosing what feels like you. ♡";
-
-        recordEvent("quiz_complete");
-      }
-    };
-
-    box.appendChild(button);
+  q.choices.forEach((choice, index) => {
+    html +=
+      '<button class="quiz-choice" onclick="answerQuiz(' +
+      index + ')">' + choice + "</button>";
   });
+
+  result.innerHTML = html;
 }
 
+function answerQuiz(choice) {
+  quizStep++;
+  showQuizQuestion();
+}
 
-/* ==================================
-   FIVE LITTLE STARS
-================================== */
+// =====================================
+// STARS
+// =====================================
+
+let starsCollected = 0;
 
 function collectStar(button) {
   if (button.classList.contains("found")) return;
 
   button.classList.add("found");
+  starsCollected++;
 
-  const foundStars =
-    document.querySelectorAll(".star-pick.found").length;
-
-  if (foundStars === 5) {
+  if (starsCollected >= 5) {
     document.getElementById("starsResult").style.display = "block";
-
-    recordEvent("stars_complete");
+    logEvent("stars_complete");
   }
 }
 
-
-/* ==================================
-   FUTURE NOTE
-================================== */
+// =====================================
+// FUTURE NOTE
+// =====================================
 
 function revealFuture() {
   document.getElementById("futureResult").style.display = "block";
 }
 
+// =====================================
+// HAPPINESS JAR
+// =====================================
 
-/* ==================================
-   GALLERY + MUSIC EVENTS
-================================== */
+const happinessNotes = [
+  "You deserve a day full of beautiful surprises. ♡",
+  "Never stop believing in your dreams.",
+  "Your smile can make an ordinary moment special.",
+  "You are allowed to take things one step at a time.",
+  "Remember to celebrate your little achievements.",
+  "A new day means a new chance to do something lovely.",
+  "You deserve genuine friendship and kindness.",
+  "Don't forget how far you've already come.",
+  "Your dreams are worth working for.",
+  "Take a moment to enjoy the little things.",
+  "You don't have to be perfect to be wonderful.",
+  "There is always room for another happy memory.",
+  "Be proud of the person you're becoming.",
+  "Your voice and ideas matter.",
+  "Keep a little space in your day for fun.",
+  "You deserve peace as much as you deserve success.",
+  "Some of the best moments are completely unexpected.",
+  "Keep being curious about the world.",
+  "Your future has so many possibilities.",
+  "It's okay to start something new.",
+  "Be kind to yourself today.",
+  "You make a difference in people's lives.",
+  "Don't let a bad moment steal a good day.",
+  "Keep collecting reasons to smile.",
+  "You deserve to feel appreciated.",
+  "One small step can lead to something amazing.",
+  "Your story is still being written.",
+  "Never underestimate the power of a kind word.",
+  "May your next chapter be full of good things.",
+  "And finally: Happy Birthday, Jojo! ♡"
+];
 
-document.querySelectorAll(".photo-frame img").forEach(img => {
-  img.addEventListener("click", function() {
-    recordEvent("gallery_open");
+let remainingNotes = [...happinessNotes];
+
+document.getElementById("jxDraw").addEventListener("click", function() {
+  const result = document.getElementById("jxNote");
+  const count = document.getElementById("jxNoteCount");
+
+  if (remainingNotes.length === 0) {
+    remainingNotes = [...happinessNotes];
+  }
+
+  const index = Math.floor(Math.random() * remainingNotes.length);
+  const note = remainingNotes.splice(index, 1)[0];
+
+  result.textContent = note;
+  result.style.display = "block";
+
+  count.textContent =
+    remainingNotes.length + " little notes remaining";
+});
+
+// =====================================
+// OPEN WHEN MESSAGES
+// =====================================
+
+const openMessages = [
+  {
+    title: "When you feel sad 🌧️",
+    message: "Be patient with yourself. You don't have to solve everything today. Take a breath, rest, and remember that better moments can still be ahead."
+  },
+  {
+    title: "When you feel happy ☀️",
+    message: "I hope you enjoy every second of it. Save this feeling, celebrate yourself, and let the happiness last as long as possible."
+  },
+  {
+    title: "When you need motivation ✨",
+    message: "You are capable of learning, growing, and doing things you once thought were difficult. Keep going at your own pace."
+  },
+  {
+    title: "When you miss old memories 📸",
+    message: "Some memories stay special because of the people and feelings connected to them. I hope this little page brings you a smile."
+  },
+  {
+    title: "When you need a laugh 😂",
+    message: "Official reminder: you are required to smile at least once today. This is a very serious birthday rule."
+  },
+  {
+    title: "When you need a reminder 💗",
+    message: "You matter. Your happiness matters. And you deserve people who respect, appreciate, and support you."
+  }
+];
+
+const openGrid = document.getElementById("jxOpenGrid");
+
+openMessages.forEach((item, index) => {
+  const card = document.createElement("div");
+  card.className = "jx-card";
+
+  const heading = document.createElement("h3");
+  heading.textContent = item.title;
+
+  const button = document.createElement("button");
+  button.className = "jx-btn alt";
+  button.textContent = "Open this note";
+
+  button.addEventListener("click", function() {
+    const result = document.getElementById("jxOpenResult");
+    result.textContent = item.message;
+    result.style.display = "block";
+  });
+
+  card.appendChild(heading);
+  card.appendChild(button);
+  openGrid.appendChild(card);
+});
+
+// =====================================
+// MEMORY MATCHING GAME
+// =====================================
+
+const gameSymbols = ["💗", "🌸", "🎀", "⭐", "🦋", "🎂"];
+let gameCards = [];
+let firstCard = null;
+let secondCard = null;
+let lockBoard = false;
+let matchedPairs = 0;
+
+function startMemoryGame() {
+  gameCards = [...gameSymbols, ...gameSymbols]
+    .sort(() => Math.random() - 0.5);
+
+  firstCard = null;
+  secondCard = null;
+  lockBoard = false;
+  matchedPairs = 0;
+
+  document.getElementById("jxGameWin").style.display = "none";
+  document.getElementById("jxGameStatus").textContent =
+    "0 of 6 pairs found";
+
+  document.getElementById("jxGameProgress").style.width = "0%";
+
+  const board = document.getElementById("jxMatchBoard");
+  board.innerHTML = "";
+
+  gameCards.forEach((symbol, index) => {
+    const button = document.createElement("button");
+    button.className = "jx-tile";
+    button.textContent = "?";
+    button.dataset.symbol = symbol;
+    button.dataset.index = index;
+
+    button.addEventListener("click", function() {
+      flipCard(button);
+    });
+
+    board.appendChild(button);
+  });
+}
+
+function flipCard(card) {
+  if (lockBoard ||
+      card.classList.contains("done") ||
+      card === firstCard) {
+    return;
+  }
+
+  card.textContent = card.dataset.symbol;
+  card.classList.add("open");
+
+  if (!firstCard) {
+    firstCard = card;
+    return;
+  }
+
+  secondCard = card;
+  lockBoard = true;
+
+  if (firstCard.dataset.symbol === secondCard.dataset.symbol) {
+    firstCard.classList.add("done");
+    secondCard.classList.add("done");
+
+    firstCard.classList.remove("open");
+    secondCard.classList.remove("open");
+
+    matchedPairs++;
+
+    document.getElementById("jxGameStatus").textContent =
+      matchedPairs + " of 6 pairs found";
+
+    document.getElementById("jxGameProgress").style.width =
+      (matchedPairs / 6 * 100) + "%";
+
+    firstCard = null;
+    secondCard = null;
+    lockBoard = false;
+
+    if (matchedPairs === 6) {
+      document.getElementById("jxGameWin").style.display = "block";
+    }
+
+  } else {
+    setTimeout(function() {
+      firstCard.textContent = "?";
+      secondCard.textContent = "?";
+
+      firstCard.classList.remove("open");
+      secondCard.classList.remove("open");
+
+      firstCard = null;
+      secondCard = null;
+      lockBoard = false;
+    }, 850);
+  }
+}
+
+document.getElementById("jxRestart").addEventListener(
+  "click",
+  startMemoryGame
+);
+
+startMemoryGame();
+
+// =====================================
+// RANDOM SURPRISE
+// =====================================
+
+const surprises = [
+  "A little reminder: you deserve happiness, every single day. ♡",
+  "Today's mission: find one thing that makes you laugh.",
+  "Your birthday is a celebration of you and all the possibilities ahead.",
+  "Keep your dreams big and your heart kind.",
+  "You are the main character of your own story. 🎀",
+  "Sending a little virtual sparkle your way. ✨",
+  "May your next memory be even better than the last."
+];
+
+document.getElementById("jxSurprise").addEventListener("click", function() {
+  const index = Math.floor(Math.random() * surprises.length);
+  const result = document.getElementById("jxSurpriseResult");
+
+  result.textContent = surprises[index];
+  result.style.display = "block";
+});
+
+// =====================================
+// WISH CORNER - SAVED ON THIS DEVICE
+// =====================================
+
+function loadWishes() {
+  const list = document.getElementById("jxWishList");
+  list.innerHTML = "";
+
+  let wishes = [];
+
+  try {
+    wishes = JSON.parse(localStorage.getItem("jojoWishes") || "[]");
+  } catch (error) {
+    wishes = [];
+  }
+
+  wishes.forEach(wish => {
+    const item = document.createElement("div");
+    item.className = "jx-wish-item";
+    item.textContent = "♡ " + wish;
+    list.appendChild(item);
+  });
+}
+
+document.getElementById("jxSaveWish").addEventListener("click", function() {
+  const input = document.getElementById("jxWishInput");
+  const wish = input.value.trim();
+
+  if (!wish) {
+    alert("Write a little wish first ♡");
+    return;
+  }
+
+  let wishes = [];
+
+  try {
+    wishes = JSON.parse(localStorage.getItem("jojoWishes") || "[]");
+  } catch (error) {
+    wishes = [];
+  }
+
+  wishes.push(wish);
+
+  localStorage.setItem("jojoWishes", JSON.stringify(wishes));
+
+  input.value = "";
+  loadWishes();
+});
+
+loadWishes();
+
+// =====================================
+// PHOTO LIGHTBOX
+// =====================================
+
+const lightbox = document.getElementById("jxLightbox");
+const largePhoto = document.getElementById("jxLargePhoto");
+
+document.querySelectorAll(".photo-frame img").forEach(photo => {
+  photo.style.cursor = "zoom-in";
+
+  photo.addEventListener("click", function() {
+    largePhoto.src = photo.src;
+    lightbox.style.display = "flex";
+    logEvent("gallery_open");
   });
 });
 
-const audioPlayer = document.querySelector("audio");
+document.getElementById("jxCloseLightbox").addEventListener("click", function() {
+  lightbox.style.display = "none";
+  largePhoto.src = "";
+});
 
-if (audioPlayer) {
-  audioPlayer.addEventListener("play", function() {
-    recordEvent("song_play");
+lightbox.addEventListener("click", function(event) {
+  if (event.target === lightbox) {
+    lightbox.style.display = "none";
+    largePhoto.src = "";
+  }
+});
+
+// =====================================
+// SONG TRACKING
+// =====================================
+
+document.querySelectorAll("audio").forEach(player => {
+  player.addEventListener("play", function() {
+    logEvent("song_play");
   });
-}
+});
 
-
-/* ==================================
-   LETTER VISIT TRACKING
-================================== */
-
-let letterObserverStarted = false;
-
-function activateLetterTracking() {
-  if (letterObserverStarted) return;
-
-  if (!("IntersectionObserver" in window)) return;
-
-  letterObserverStarted = true;
-
-  const letters = document.querySelectorAll(".letter");
-
-  letters.forEach(letter => {
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          recordEvent("letter_open");
-          observer.disconnect();
-        }
-      });
-    }, {
-      threshold: 0.35
-    });
-
-    observer.observe(letter);
-  });
-}
-
+// =====================================
+// END
+// =====================================
 </script>
 
 </body>
