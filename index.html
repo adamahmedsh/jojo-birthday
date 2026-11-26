@@ -1,197 +1,389 @@
 from pathlib import Path
+import re, zipfile, json, os, textwrap
 
-src = Path("/mnt/data/Pasted text(20261126-151225).txt")
+src = Path("/mnt/data/Pasted text(20261126-153522).txt")
 html = src.read_text(encoding="utf-8")
 
-extra_css = r"""
-/* EXTRA LITTLE SURPRISES */
-.extra-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:22px}
-.extra-card{background:#ffffff09;border:1px solid #f5a9ca44;border-radius:18px;padding:20px}
-.extra-card h3{font-family:'Playfair Display',serif;color:var(--pink);font-size:21px;margin-bottom:10px}
-.extra-card p{color:#eadde7;line-height:1.85}
-.extra-btn{border:1px solid #f5a9ca66;background:#f5a9ca16;color:#ffe5f0;border-radius:13px;padding:12px 16px;cursor:pointer;margin:7px 5px 0 0;font-size:14px;transition:.2s}
-.extra-btn:hover{background:#f5a9ca30;transform:translateY(-2px)}
-.extra-result{display:none;margin-top:14px;padding:15px;border-radius:13px;background:#f5a9ca14;color:#ffe8f2;line-height:1.9}
-.quiz-options{display:grid;gap:9px;margin-top:15px}
-.quiz-option{width:100%;text-align:left;border:1px solid #f5a9ca44;background:#ffffff09;color:#fff0f6;border-radius:12px;padding:13px;cursor:pointer}
-.quiz-option:hover{background:#f5a9ca20}
-.quiz-option:disabled{cursor:default;opacity:.8}
-.quiz-progress{height:6px;background:#ffffff18;border-radius:20px;overflow:hidden;margin:15px 0}
-.quiz-progress span{display:block;height:100%;width:0;background:var(--pink);transition:width .25s}
-.scratch-card{border:1px dashed #f5a9ca99;border-radius:16px;padding:25px 18px;text-align:center;background:linear-gradient(135deg,#f5a9ca18,#ffffff08);cursor:pointer;user-select:none}
-.scratch-card .cover{font-size:20px;color:var(--pink);font-family:'Playfair Display',serif}
-.star-field{display:flex;justify-content:center;flex-wrap:wrap;gap:12px;margin:18px 0}
-.star{font-size:35px;cursor:pointer;filter:grayscale(1);opacity:.55;transition:.2s}
-.star.collected{filter:none;opacity:1;transform:scale(1.2)}
-.future-note{font-family:'Playfair Display',serif;color:#f8d5e5;font-size:18px;line-height:1.9}
-@media(max-width:520px){.extra-card{padding:17px}.star{font-size:31px}}
+# Add Firebase SDK scripts before the existing main script.
+firebase_scripts = """
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
 """
+html = html.replace("<script>\n/* PASSWORD */", firebase_scripts + "\n<script>\n/* PASSWORD */", 1)
 
-extra_sections = r"""
-<!-- EXTRA INTERACTIVE SURPRISES -->
-<section id="little-surprises">
-  <p class="section-tag">A FEW MORE LITTLE THINGS</p>
-  <h2>Just For You, Jojo ✨</h2>
-  <p class="section-intro">A few small surprises to explore. Take your time and open whichever one makes you smile.</p>
+# Add privacy notice and extra interactions before footer.
+extra_css = """
+/* EXTRA EXPERIENCES + CONSENT */
+.consent-panel{position:fixed;inset:0;z-index:11000;background:#080e20eF;display:none;align-items:center;justify-content:center;padding:20px}
+.consent-card{width:min(520px,100%);background:#182443;border:1px solid #f5a9ca88;border-radius:22px;padding:26px;box-shadow:0 20px 70px #0008}
+.consent-card h2{margin-bottom:12px}.consent-card p{line-height:1.8;color:#f3dce8;margin-bottom:16px}
+.consent-actions{display:flex;gap:10px;flex-wrap:wrap}.secondary-btn,.extra-btn{padding:12px 18px;border-radius:24px;border:1px solid #f5a9ca77;background:#ffffff0c;color:#ffe5f0;cursor:pointer}
+.extra-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;margin-top:20px}
+.extra-card{border:1px solid #f5a9ca44;background:#ffffff09;border-radius:17px;padding:18px}
+.extra-card h3{font-family:'Playfair Display',serif;color:var(--pink);font-size:21px;margin-bottom:10px}
+.extra-card p{color:#f2dce8;line-height:1.8}
+.extra-card button{margin-top:12px}
+.extra-result{display:none;margin-top:13px;padding:14px;border-radius:12px;background:#f5a9ca15;color:#ffe5f0;line-height:1.8}
+.quiz-choice{display:block;width:100%;text-align:left;margin:8px 0;padding:12px;border-radius:12px;border:1px solid #f5a9ca55;background:#ffffff0b;color:#fff;cursor:pointer}
+.star-board{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px}
+.star-pick{font-size:32px;background:transparent;border:0;cursor:pointer;filter:grayscale(1);opacity:.55}
+.star-pick.found{filter:none;opacity:1}
+@media(max-width:520px){.consent-actions>*{width:100%}}
+"""
+html = html.replace("</style>", extra_css + "\n</style>", 1)
 
+extra_markup = """
+<!-- PRIVACY / ACTIVITY NOTICE -->
+<div class="consent-panel" id="consentPanel" role="dialog" aria-modal="true" aria-labelledby="consentTitle">
+  <div class="consent-card">
+    <p class="section-tag">A QUICK PRIVACY NOTE</p>
+    <h2 id="consentTitle">Before you explore ♡</h2>
+    <p>This website records a small number of interactions (such as opening the gallery, playing the song, or opening the gift) so the creator can see which parts of the surprise were visited. It does not record what you type, private messages, photos from your device, or your location.</p>
+    <p>You can continue without activity tracking by choosing “Continue without tracking”.</p>
+    <div class="consent-actions">
+      <button class="main-btn" onclick="chooseTracking(true)">I agree — continue</button>
+      <button class="secondary-btn" onclick="chooseTracking(false)">Continue without tracking</button>
+    </div>
+  </div>
+</div>
+
+<!-- EXTRA INTERACTIVE SECTIONS -->
+<section id="littleExtras">
+  <p class="section-tag">A FEW LITTLE SURPRISES</p>
+  <h2>Explore A Little More ✨</h2>
+  <p class="section-intro">Little interactive moments made to add some fun to your visit.</p>
   <div class="extra-grid">
     <div class="extra-card">
-      <h3>A Secret Note ♡</h3>
-      <p>There's a little message hiding here. Tap the card to reveal it.</p>
-      <div class="scratch-card" role="button" tabindex="0" onclick="revealSecret()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();revealSecret();}">
-        <div class="cover" id="secretCover">Tap to uncover ♡</div>
-        <div class="extra-result" id="secretMessage">
-          You're one of those people who make ordinary days feel a little more special. Never forget that your presence matters, and that you deserve kindness on the easy days and the difficult ones too. ♡
-        </div>
-      </div>
+      <h3>A Secret Note 💌</h3>
+      <p>A tiny reminder waiting behind a button.</p>
+      <button class="extra-btn" onclick="revealSecret()">Reveal the note</button>
+      <div class="extra-result" id="secretResult">You're one of those people who make ordinary days feel a little more special. Your presence matters. ♡</div>
     </div>
-
     <div class="extra-card">
-      <h3>Open When... 💌</h3>
-      <p>Choose a little letter for the kind of day you're having.</p>
-      <button class="extra-btn" onclick="openLetter('sad')">When you feel down</button>
-      <button class="extra-btn" onclick="openLetter('bored')">When you're bored</button>
-      <button class="extra-btn" onclick="openLetter('laugh')">When you need a laugh</button>
-      <button class="extra-btn" onclick="openLetter('memories')">When you miss old moments</button>
-      <div class="extra-result" id="openWhenResult" aria-live="polite"></div>
+      <h3>Open When... 🌷</h3>
+      <p>Choose the note that matches the moment.</p>
+      <button class="extra-btn" onclick="openWhen('sad')">When you need encouragement</button>
+      <button class="extra-btn" onclick="openWhen('bored')">When you're bored</button>
+      <button class="extra-btn" onclick="openWhen('memory')">When you remember this day</button>
+      <div class="extra-result" id="openWhenResult"></div>
     </div>
-
     <div class="extra-card">
-      <h3>A Tiny Jojo Quiz 🎀</h3>
-      <p>Seven quick questions about this little birthday world. See how many details you noticed!</p>
-      <div id="quizArea">
-        <button class="extra-btn" onclick="startQuiz()">Start the quiz ♡</button>
-      </div>
+      <h3>A Tiny Quiz 🎀</h3>
+      <p>Pick the answer that feels most like you. No scores, just for fun.</p>
+      <button class="extra-btn" onclick="startMiniQuiz()">Start the quiz</button>
+      <div class="extra-result" id="quizResult"></div>
     </div>
-
     <div class="extra-card">
-      <h3>Collect A Few Stars ⭐</h3>
-      <p>Tap all five stars to collect a tiny birthday wish.</p>
-      <div class="star-field" id="starField">
-        <span class="star" role="button" tabindex="0" aria-label="Star 1" onclick="collectStar(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();collectStar(this);}">★</span>
-        <span class="star" role="button" tabindex="0" aria-label="Star 2" onclick="collectStar(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();collectStar(this);}">★</span>
-        <span class="star" role="button" tabindex="0" aria-label="Star 3" onclick="collectStar(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();collectStar(this);}">★</span>
-        <span class="star" role="button" tabindex="0" aria-label="Star 4" onclick="collectStar(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();collectStar(this);}">★</span>
-        <span class="star" role="button" tabindex="0" aria-label="Star 5" onclick="collectStar(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();collectStar(this);}">★</span>
+      <h3>Five Little Stars ⭐</h3>
+      <p>Tap all five stars to reveal a final message.</p>
+      <div class="star-board" id="starBoard">
+        <button class="star-pick" aria-label="Star 1" onclick="collectStar(this)">★</button>
+        <button class="star-pick" aria-label="Star 2" onclick="collectStar(this)">★</button>
+        <button class="star-pick" aria-label="Star 3" onclick="collectStar(this)">★</button>
+        <button class="star-pick" aria-label="Star 4" onclick="collectStar(this)">★</button>
+        <button class="star-pick" aria-label="Star 5" onclick="collectStar(this)">★</button>
       </div>
-      <div class="extra-result" id="starResult">You collected all five! I hope your days are filled with little reasons to smile. ♡</div>
+      <div class="extra-result" id="starsResult">You found all five! Keep a little room in every day for joy, laughter, and lovely surprises. ♡</div>
     </div>
-  </div>
-</section>
-
-<section>
-  <p class="section-tag">A NOTE FROM THE FUTURE</p>
-  <h2>For You, A Little Later 💗</h2>
-  <div class="extra-card">
-    <p class="future-note">Dear Jojo,<br><br>
-    If you're reading this some time from now, I hope life has been kind to you. I hope you've grown, learned new things, laughed until your cheeks hurt, and found people and places that make you feel appreciated.<br><br>
-    Whatever has changed, I hope you still make room for the little things that make you happy. Keep chasing what matters to you, be proud of how far you've come, and remember that you deserve good things—not just today, but every day.<br><br>
-    Here's to all the chapters still waiting for you. ♡</p>
+    <div class="extra-card">
+      <h3>A Note From The Future ✉️</h3>
+      <p>For a day when you come back to this little page.</p>
+      <button class="extra-btn" onclick="revealFuture()">Read the future note</button>
+      <div class="extra-result" id="futureResult">Hey Jojo, I hope life has been kind to you. I hope you've grown, learned, laughed, and found new reasons to be proud of yourself. Whatever changed, I hope you still make time for the little things that make you happy. ♡</div>
+    </div>
   </div>
 </section>
 """
+html = html.replace("<!-- FOOTER -->", extra_markup + "\n<!-- FOOTER -->", 1)
 
-extra_js = r"""
-/* EXTRA SURPRISES */
-function revealSecret() {
-  const message = document.getElementById("secretMessage");
-  const cover = document.getElementById("secretCover");
-  message.style.display = "block";
-  cover.textContent = "A little message for you ♡";
+# Replace existing script contents by adding Firebase and event helpers before closing script.
+injected_js = r"""
+/* FIREBASE CONFIG */
+const firebaseConfig = {
+  apiKey: "AIzaSyB1RCFwXSuvIuzbeQTCAmveaIrGlNbOwK0",
+  authDomain: "jojo-birthday-31465.firebaseapp.com",
+  projectId: "jojo-birthday-31465",
+  storageBucket: "jojo-birthday-31465.firebasestorage.app",
+  messagingSenderId: "905927546263",
+  appId: "1:905927546263:web:ee44531f6ef64965f4e0d2",
+  measurementId: "G-XFLRG5KMZS"
+};
+
+let activityTracking = false;
+let firebaseReady = false;
+let db = null;
+const ADMIN_UID = "rOmhTbn4mjhLCaJT0FNL62XMMD32";
+
+try {
+  if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+  db = firebase.firestore();
+  firebaseReady = true;
+} catch (error) {
+  console.warn("Firebase could not initialize:", error);
 }
 
-function openLetter(type) {
+async function startVisitorAuth() {
+  if (!firebaseReady) return;
+  try {
+    if (!firebase.auth().currentUser) await firebase.auth().signInAnonymously();
+  } catch (error) {
+    console.warn("Anonymous sign-in failed:", error);
+  }
+}
+
+function recordEvent(eventName) {
+  if (!activityTracking || !firebaseReady || !db) return;
+  const allowed = ["site_visit","letter_open","gallery_open","song_play","quiz_start","quiz_complete","stars_complete","gift_open"];
+  if (!allowed.includes(eventName)) return;
+  startVisitorAuth().then(() => {
+    if (!firebase.auth().currentUser) return;
+    return db.collection("events").add({
+      event: eventName,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+  }).catch(error => console.warn("Event was not recorded:", error));
+}
+
+function chooseTracking(accepted) {
+  document.getElementById("consentPanel").style.display = "none";
+  activityTracking = accepted;
+  if (accepted) {
+    startVisitorAuth().then(() => recordEvent("site_visit"));
+  }
+}
+
+const originalUnlockSite = unlockSite;
+unlockSite = function() {
+  const value = document.getElementById("passwordInput").value;
+  if (value === "Jojo2203") {
+    document.getElementById("lockScreen").style.display = "none";
+    document.getElementById("consentPanel").style.display = "flex";
+  } else {
+    originalUnlockSite();
+  }
+};
+
+document.querySelectorAll(".letter").forEach(el => {
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        recordEvent("letter_open");
+        observer.disconnect();
+      }
+    });
+  }, {threshold: 0.35});
+  observer.observe(el);
+});
+
+document.querySelectorAll(".photo-frame img").forEach(img => {
+  img.addEventListener("click", () => recordEvent("gallery_open"));
+});
+const audioPlayer = document.querySelector("audio");
+if (audioPlayer) audioPlayer.addEventListener("play", () => recordEvent("song_play"));
+const giftOpenOriginal = openGift;
+openGift = function() {
+  const wasLocked = document.getElementById("giftButton").disabled;
+  giftOpenOriginal();
+  if (!wasLocked && document.getElementById("giftMessage").style.display === "block") {
+    recordEvent("gift_open");
+  }
+};
+
+function revealSecret() {
+  document.getElementById("secretResult").style.display = "block";
+}
+function openWhen(type) {
   const messages = {
-    sad: "If today feels a little heavy, take things one step at a time. You don't have to have everything figured out right now. Be patient with yourself; brighter moments can still be ahead. ♡",
-    bored: "Official Jojo mission: find one tiny thing that makes today more fun. Play a song, watch something silly, or do absolutely nothing for five minutes. Mission accepted? 🎀",
-    laugh: "This is your reminder that you're legally allowed to laugh at the most ridiculous things. Even the silly jokes deserve a second chance. Hope this made you smile. ♡",
-    memories: "Some moments seem ordinary while they're happening, then become the ones we remember most. I'm glad we have little memories to look back on, and I hope there are many more ahead. ♡"
+    sad: "It's okay to have a difficult day. Be gentle with yourself, take things one step at a time, and remember that brighter moments can come again. ♡",
+    bored: "Your tiny mission: find one small thing that makes you smile today. A favorite song, a funny video, or a snack can count!",
+    memory: "If you're reading this again, I hope this page brings back a kind memory and reminds you that the little moments can matter."
   };
   const box = document.getElementById("openWhenResult");
-  box.textContent = messages[type] || "";
+  box.textContent = messages[type];
   box.style.display = "block";
 }
-
-const quizQuestions = [
-  {q:"What is the name of this little website?",a:["Jojo's Little World","A Secret Garden","The Pink Diary"],correct:0},
-  {q:"Which two colors inspired the website?",a:["Red and black","Pink and navy","Purple and white"],correct:1},
-  {q:"When is Jojo's birthday celebration on this website?",a:["March 22, 2027","April 2, 2027","May 22, 2027"],correct:0},
-  {q:"What is the heading of the main letter?",a:["A Note For Today","A Letter For You","A Small Goodbye"],correct:1},
-  {q:"What can you find in the music section?",a:["A podcast","A birthday song player","A voice message"],correct:1},
-  {q:"What is waiting in the birthday gift section?",a:["A message to open on her birthday","A daily reminder","A photo filter"],correct:0},
-  {q:"Who made this little world?",a:["A secret admirer","Adam","A team of designers"],correct:1}
-];
 let quizIndex = 0;
-let quizScore = 0;
-
-function startQuiz() {
+const quizQuestions = [
+  {q:"Pick the kind of day you'd enjoy most:",a:["A day full of laughter","A calm day with no rush","A little adventure"]},
+  {q:"Choose a perfect small surprise:",a:["A thoughtful note","A favorite song","A funny memory"]},
+  {q:"What should never be missing from a friendship?",a:["Honesty","Laughter","Support"]}
+];
+function startMiniQuiz() {
   quizIndex = 0;
-  quizScore = 0;
-  showQuizQuestion();
+  recordEvent("quiz_start");
+  showMiniQuestion();
 }
-
-function showQuizQuestion() {
-  const area = document.getElementById("quizArea");
+function showMiniQuestion() {
+  const box = document.getElementById("quizResult");
   const item = quizQuestions[quizIndex];
-  const progress = Math.round((quizIndex / quizQuestions.length) * 100);
-  area.innerHTML = `<p style="color:#e8c994">Question ${quizIndex + 1} of ${quizQuestions.length}</p>
-    <div class="quiz-progress"><span style="width:${progress}%"></span></div>
-    <h3 style="font-family:'Playfair Display',serif;color:#f5a9ca;margin:12px 0">${item.q}</h3>
-    <div class="quiz-options">${item.a.map((answer,index) => `<button class="quiz-option" onclick="answerQuiz(${index})">${answer}</button>`).join("")}</div>
-    <p id="quizFeedback" class="extra-result" aria-live="polite"></p>`;
+  box.style.display = "block";
+  box.innerHTML = "<strong>" + item.q + "</strong>";
+  item.a.forEach(answer => {
+    const button = document.createElement("button");
+    button.className = "quiz-choice";
+    button.textContent = answer;
+    button.onclick = () => {
+      quizIndex++;
+      if (quizIndex < quizQuestions.length) showMiniQuestion();
+      else {
+        box.textContent = "Thanks for playing! There isn't a right or wrong answer — the best part is choosing what feels like you. ♡";
+        recordEvent("quiz_complete");
+      }
+    };
+    box.appendChild(button);
+  });
 }
-
-function answerQuiz(choice) {
-  const item = quizQuestions[quizIndex];
-  const buttons = document.querySelectorAll("#quizArea .quiz-option");
-  buttons.forEach(button => button.disabled = true);
-  const feedback = document.getElementById("quizFeedback");
-  const correct = choice === item.correct;
-  if (correct) quizScore++;
-  feedback.textContent = correct ? "That's right! ♡" : `The answer is: ${item.a[item.correct]}`;
-  feedback.style.display = "block";
-  const area = document.getElementById("quizArea");
-  const next = document.createElement("button");
-  next.className = "extra-btn";
-  next.textContent = quizIndex === quizQuestions.length - 1 ? "See my result ♡" : "Next question →";
-  next.onclick = nextQuizQuestion;
-  area.appendChild(next);
-}
-
-function nextQuizQuestion() {
-  quizIndex++;
-  if (quizIndex < quizQuestions.length) {
-    showQuizQuestion();
-    return;
+function collectStar(button) {
+  if (button.classList.contains("found")) return;
+  button.classList.add("found");
+  if (document.querySelectorAll(".star-pick.found").length === 5) {
+    document.getElementById("starsResult").style.display = "block";
+    recordEvent("stars_complete");
   }
-  const area = document.getElementById("quizArea");
-  let message = "A lovely try! The best part is that you explored every little corner of this page. ♡";
-  if (quizScore === quizQuestions.length) message = "Perfect score! You noticed every detail. Jojo, you're officially the expert of this little world! 🎀";
-  else if (quizScore >= 5) message = "Amazing! You noticed almost every detail. This little world has been explored properly. ♡";
-  else if (quizScore >= 3) message = "Well done! You found quite a few of the little details. Hope you enjoyed the tour. 💗";
-  area.innerHTML = `<h3 style="font-family:'Playfair Display',serif;color:#f5a9ca">You got ${quizScore} out of ${quizQuestions.length}!</h3><p style="color:#eadde7;line-height:1.8;margin-top:10px">${message}</p><button class="extra-btn" onclick="startQuiz()">Play again</button>`;
 }
+function revealFuture() {
+  document.getElementById("futureResult").style.display = "block";
+}
+"""
+html = html.replace("</script>", injected_js + "\n</script>", 1)
 
-function collectStar(star) {
-  if (star.classList.contains("collected")) return;
-  star.classList.add("collected");
-  const collected = document.querySelectorAll("#starField .star.collected").length;
-  if (collected === 5) {
-    document.getElementById("starResult").style.display = "block";
+# Track the main gallery section when it enters view (deduplicated observer), plus section event tracking.
+# Note: existing script uses inline handlers and functions; appended script executes after definitions.
+
+admin_html = r"""<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#10182f">
+<title>Adam's Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#10182f;--navy2:#182443;--pink:#f5a9ca;--gold:#e8c994;--white:#fff9fc}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 15% 10%,#f5a9ca18,transparent 30%),var(--navy);color:var(--white);font-family:'DM Sans',sans-serif;padding:24px}
+.wrap{max-width:1050px;margin:auto}.top{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap;margin:20px 0 28px}
+h1,h2{font-family:'Playfair Display',serif;color:var(--pink)}h1{font-size:clamp(32px,6vw,52px);margin:0}p{color:#dfd5e2;line-height:1.7}
+.card{background:#ffffff0b;border:1px solid #f5a9ca40;border-radius:18px;padding:22px;margin:14px 0}
+input{display:block;width:100%;max-width:420px;margin:10px 0;padding:14px;border-radius:12px;border:1px solid #f5a9ca66;background:#ffffff10;color:white}
+button{padding:12px 18px;border:0;border-radius:24px;background:var(--pink);color:var(--navy);font-weight:700;cursor:pointer}
+.secondary{background:#ffffff12;color:#ffe5f0;border:1px solid #f5a9ca66}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}.metric{font-size:32px;color:var(--pink);font-weight:700}
+table{width:100%;border-collapse:collapse;min-width:520px}th,td{text-align:left;padding:13px;border-bottom:1px solid #ffffff18}th{color:var(--gold)}
+.table-wrap{overflow:auto}.muted{color:#bfb4c4;font-size:13px}.hidden{display:none!important}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top"><div><p class="muted">PRIVATE OWNER AREA</p><h1>Adam's Dashboard ♡</h1><p>Activity summary for Jojo's Little World. Only events shared after consent appear here.</p></div><button class="secondary" id="logoutBtn" onclick="logout()" hidden>Sign out</button></div>
+  <section class="card" id="loginCard">
+    <h2>Owner sign in</h2>
+    <p>Sign in with the email and password you created in Firebase Authentication.</p>
+    <input id="email" type="email" placeholder="Your email" autocomplete="username">
+    <input id="password" type="password" placeholder="Your password" autocomplete="current-password">
+    <button onclick="login()">Sign in</button>
+    <p id="loginMessage" class="muted"></p>
+  </section>
+  <div id="dashboard" class="hidden">
+    <div class="grid">
+      <div class="card"><p>Total visits</p><div class="metric" id="visits">0</div></div>
+      <div class="card"><p>Song plays</p><div class="metric" id="plays">0</div></div>
+      <div class="card"><p>Gallery opens</p><div class="metric" id="gallery">0</div></div>
+      <div class="card"><p>Gift opens</p><div class="metric" id="gifts">0</div></div>
+    </div>
+    <section class="card"><div class="top"><h2>Recent activity</h2><button onclick="loadEvents()">Refresh</button></div>
+      <p class="muted">This list shows only the limited interaction events described in the visitor notice.</p>
+      <div class="table-wrap"><table><thead><tr><th>Event</th><th>Time</th></tr></thead><tbody id="eventRows"><tr><td colspan="2">No events yet.</td></tr></tbody></table></div>
+    </section>
+  </div>
+</div>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+<script>
+const firebaseConfig = {
+  apiKey:"AIzaSyB1RCFwXSuvIuzbeQTCAmveaIrGlNbOwK0",
+  authDomain:"jojo-birthday-31465.firebaseapp.com",
+  projectId:"jojo-birthday-31465",
+  storageBucket:"jojo-birthday-31465.firebasestorage.app",
+  messagingSenderId:"905927546263",
+  appId:"1:905927546263:web:ee44531f6ef64965f4e0d2",
+  measurementId:"G-XFLRG5KMZS"
+};
+const ADMIN_UID="rOmhTbn4mjhLCaJT0FNL62XMMD32";
+firebase.initializeApp(firebaseConfig);
+const auth=firebase.auth(), db=firebase.firestore();
+async function login(){
+  const msg=document.getElementById("loginMessage");
+  msg.textContent="Signing in...";
+  try{
+    const cred=await auth.signInWithEmailAndPassword(document.getElementById("email").value.trim(),document.getElementById("password").value);
+    if(cred.user.uid!==ADMIN_UID){await auth.signOut();msg.textContent="This account is not authorized.";return;}
+    document.getElementById("loginCard").classList.add("hidden");
+    document.getElementById("dashboard").classList.remove("hidden");
+    document.getElementById("logoutBtn").hidden=false;
+    await loadEvents();
+  }catch(e){msg.textContent="Sign-in failed. Check your email and password.";}
+}
+async function loadEvents(){
+  const user=auth.currentUser;
+  if(!user||user.uid!==ADMIN_UID)return;
+  const snap=await db.collection("events").orderBy("createdAt","desc").limit(100).get();
+  const events=snap.docs.map(d=>d.data());
+  const count=n=>events.filter(e=>e.event===n).length;
+  document.getElementById("visits").textContent=count("site_visit");
+  document.getElementById("plays").textContent=count("song_play");
+  document.getElementById("gallery").textContent=count("gallery_open");
+  document.getElementById("gifts").textContent=count("gift_open");
+  const names={site_visit:"Visited the website",letter_open:"Opened a letter",gallery_open:"Opened a photo",song_play:"Played the song",quiz_start:"Started the quiz",quiz_complete:"Completed the quiz",stars_complete:"Collected all stars",gift_open:"Opened the birthday gift"};
+  const rows=document.getElementById("eventRows");rows.replaceChildren();
+  if(!events.length){rows.innerHTML="<tr><td colspan='2'>No events yet.</td></tr>";return;}
+  events.forEach(e=>{
+    const tr=document.createElement("tr"),td1=document.createElement("td"),td2=document.createElement("td");
+    td1.textContent=names[e.event]||"Website interaction";
+    td2.textContent=e.createdAt&&e.createdAt.toDate?e.createdAt.toDate().toLocaleString():"Waiting for timestamp";
+    tr.append(td1,td2);rows.append(tr);
+  });
+}
+async function logout(){await auth.signOut();location.reload();}
+</script>
+</body>
+</html>
+"""
+
+rules = """rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isAdmin() {
+      return request.auth != null
+        && request.auth.uid == "rOmhTbn4mjhLCaJT0FNL62XMMD32";
+    }
+
+    match /events/{eventId} {
+      allow create: if request.auth != null
+        && request.resource.data.keys().hasOnly(["event", "createdAt"])
+        && request.resource.data.keys().hasAll(["event", "createdAt"])
+        && request.resource.data.event in [
+          "site_visit", "letter_open", "gallery_open", "song_play",
+          "quiz_start", "quiz_complete", "stars_complete", "gift_open"
+        ]
+        && request.resource.data.createdAt == request.time;
+      allow read: if isAdmin();
+      allow update, delete: if false;
+    }
   }
 }
 """
 
-if "</style>" not in html or "</footer>" not in html or "</script>" not in html:
-    raise ValueError("The uploaded HTML is missing an expected insertion point.")
+outdir = Path("/mnt/data/jojo_firebase_complete")
+outdir.mkdir(exist_ok=True)
+(outdir/"index.html").write_text(html, encoding="utf-8")
+(outdir/"admin.html").write_text(admin_html, encoding="utf-8")
+(outdir/"firestore.rules").write_text(rules, encoding="utf-8")
+zip_path = Path("/mnt/data/jojo_firebase_complete.zip")
+with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as z:
+    for p in outdir.iterdir():
+        z.write(p, arcname=p.name)
 
-html = html.replace("</style>", extra_css + "\n</style>", 1)
-html = html.replace("</footer>", "</footer>\n\n" + extra_sections, 1)
-html = html.replace("</script>", extra_js + "\n</script>", 1)
-
-# Small accessibility/usability improvement: allow Enter to submit password already supported.
-# Keep all existing photo and audio paths unchanged.
-out = Path("/mnt/data/jojo-birthday-complete.html")
-out.write_text(html, encoding="utf-8")
-print(f"Created: {out}")
-print(f"Size: {out.stat().st_size:,} bytes")
+print("Created:", zip_path)
+print("Files:", [p.name for p in outdir.iterdir()])
