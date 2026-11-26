@@ -110,6 +110,7 @@
 <main>
   <section class="card" id="loginPanel">
     <h1>Adam's Private Page ♡</h1>
+
     <p>
       Sign in with your Firebase account to view the wishes
       that Jojo has chosen to send you.
@@ -144,8 +145,11 @@
         <h1>Jojo's Wishes ♡</h1>
         <button class="small" id="logoutButton">Sign Out</button>
       </div>
+
       <p>These are the wishes Jojo chose to send to you.</p>
+
       <button id="refreshButton">Refresh Wishes ↻</button>
+
       <p id="status" aria-live="polite"></p>
     </div>
 
@@ -184,6 +188,7 @@
   const wishList = document.getElementById("wishList");
   const loginButton = document.getElementById("loginButton");
 
+  // LOGIN
   document.getElementById("loginForm").addEventListener("submit", async function(event) {
     event.preventDefault();
 
@@ -198,27 +203,27 @@
 
       if (result.user.uid !== OWNER_UID) {
         await auth.signOut();
-        throw new Error("This account is not allowed to view these wishes.");
+        loginStatus.textContent = "This account is not authorized.";
+      } else {
+        loginStatus.textContent = "Signed in successfully.";
       }
 
-      loginStatus.textContent = "";
-      await showDashboard();
-
     } catch (error) {
-      loginStatus.textContent =
-        "Sign-in failed. Check your account details and try again.";
       console.error(error);
+      loginStatus.textContent = "Sign-in failed. Check your account details.";
     } finally {
       loginButton.disabled = false;
     }
   });
 
+  // SHOW DASHBOARD
   async function showDashboard() {
     loginPanel.style.display = "none";
     dashboard.style.display = "block";
     await loadWishes();
   }
 
+  // LOAD WISHES
   async function loadWishes() {
     wishList.innerHTML = "";
     status.textContent = "Loading wishes...";
@@ -250,15 +255,11 @@
         const date = document.createElement("div");
         date.className = "date";
 
-        if (data.createdAt && data.createdAt.toDate) {
-          date.textContent = data.createdAt.toDate().toLocaleString();
-        } else {
-          date.textContent = "Date not available yet";
-        }
+        date.textContent = data.createdAt?.toDate
+          ? data.createdAt.toDate().toLocaleString()
+          : "Date not available yet";
 
-        card.appendChild(heading);
-        card.appendChild(message);
-        card.appendChild(date);
+        card.append(heading, message, date);
         wishList.appendChild(card);
       });
 
@@ -269,25 +270,25 @@
     }
   }
 
+  // REFRESH
   document.getElementById("refreshButton").addEventListener("click", loadWishes);
 
+  // LOGOUT
   document.getElementById("logoutButton").addEventListener("click", async function() {
     await auth.signOut();
-    dashboard.style.display = "none";
-    loginPanel.style.display = "block";
-    wishList.innerHTML = "";
-    document.getElementById("password").value = "";
   });
 
+  // AUTH STATE
   auth.onAuthStateChanged(async function(user) {
-    if (!user) return;
-
-    if (user.uid === OWNER_UID) {
+    if (user && user.uid === OWNER_UID) {
       await showDashboard();
     } else {
-      await auth.signOut();
+      dashboard.style.display = "none";
+      loginPanel.style.display = "block";
+      wishList.innerHTML = "";
     }
   });
 </script>
+
 </body>
 </html>
