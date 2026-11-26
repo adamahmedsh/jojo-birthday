@@ -1,771 +1,197 @@
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#10182f">
-<title>Jojo's Little World ♡</title>
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&display=swap" rel="stylesheet">
-
-<style>
-:root {
-  --navy:#10182f;
-  --navy2:#182443;
-  --pink:#f5a9ca;
-  --light:#ffe5f0;
-  --white:#fff9fc;
-  --gold:#e8c994;
-}
-
-* {
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
-}
-
-html { scroll-behavior:smooth; }
-
-body {
-  background:var(--navy);
-  color:var(--white);
-  font-family:'DM Sans',sans-serif;
-  overflow-x:hidden;
-}
-
-body:before {
-  content:"";
-  position:fixed;
-  inset:0;
-  pointer-events:none;
-  z-index:-1;
-  background:
-    radial-gradient(circle at 15% 15%,#f5a9ca18,transparent 30%),
-    radial-gradient(circle at 85% 60%,#536aab22,transparent 35%);
-}
-
-button { font-family:inherit; }
-
-#lockScreen {
-  position:fixed;
-  inset:0;
-  z-index:10000;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  padding:25px;
-  text-align:center;
-  background:
-    radial-gradient(circle at 50% 20%,#f5a9ca35,transparent 35%),
-    linear-gradient(145deg,#0b1227,#172344 65%,#39253f);
-}
-
-.lock-heart {
-  font-size:55px;
-  color:var(--pink);
-  animation:pulse 2s infinite;
-  margin-bottom:20px;
-}
-
-#lockScreen h1 {
-  font-family:'Playfair Display',serif;
-  font-size:clamp(38px,8vw,60px);
-  color:var(--pink);
-  margin-bottom:12px;
-}
-
-#lockScreen p {
-  color:#f6dce8;
-  line-height:1.8;
-}
-
-#passwordInput {
-  width:min(300px,90%);
-  padding:16px;
-  border-radius:30px;
-  border:1px solid #f5a9ca88;
-  outline:none;
-  margin:24px 0 8px;
-  background:#ffffff12;
-  color:white;
-  text-align:center;
-  font-size:17px;
-}
-
-#passwordInput::placeholder { color:#eac7d8; }
-
-.main-btn {
-  padding:14px 27px;
-  border:0;
-  border-radius:30px;
-  background:var(--pink);
-  color:var(--navy);
-  font-weight:700;
-  font-size:15px;
-  cursor:pointer;
-  transition:.3s;
-}
-
-.main-btn:hover {
-  transform:translateY(-3px);
-  box-shadow:0 8px 25px #f5a9ca40;
-}
-
-#errorMessage {
-  color:#ffd0e1;
-  margin-top:12px;
-  min-height:22px;
-}
-
-.hero {
-  min-height:90vh;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  padding:70px 20px;
-  text-align:center;
-  position:relative;
-}
-
-.eyebrow {
-  color:var(--gold);
-  letter-spacing:5px;
-  font-size:11px;
-  text-transform:uppercase;
-  margin-bottom:22px;
-}
-
-.hero h1 {
-  font-family:'Playfair Display',serif;
-  font-size:clamp(48px,10vw,90px);
-  color:var(--pink);
-  line-height:1.12;
-  text-shadow:0 5px 35px #f5a9ca22;
-}
-
-.hero .subtitle {
-  margin-top:20px;
-  color:#e8dce6;
-  font-size:17px;
-  letter-spacing:1px;
-}
-
-.hero-date {
-  margin-top:35px;
-  color:var(--gold);
-  letter-spacing:4px;
-  font-size:13px;
-}
-
-.scroll {
-  position:absolute;
-  bottom:30px;
-  color:#e9b8d0;
-  font-size:12px;
-  letter-spacing:3px;
-  animation:float 2s infinite;
-}
-
-section {
-  width:min(900px,91%);
-  margin:35px auto;
-  padding:clamp(25px,5vw,50px);
-  background:linear-gradient(145deg,#ffffff0d,#ffffff05);
-  border:1px solid #f5a9ca35;
-  border-radius:25px;
-  box-shadow:0 18px 50px #00000020;
-}
-
-.section-tag {
-  color:var(--gold);
-  letter-spacing:4px;
-  text-transform:uppercase;
-  font-size:10px;
-  margin-bottom:12px;
-}
-
-h2 {
-  font-family:'Playfair Display',serif;
-  font-size:clamp(27px,5vw,38px);
-  color:var(--pink);
-  margin-bottom:20px;
-  font-weight:500;
-}
-
-.section-intro {
-  color:#e6dce7;
-  line-height:1.9;
-  margin-bottom:20px;
-}
-
-.letter {
-  color:#f5e9f0;
-  font-size:16px;
-  line-height:2.15;
-  white-space:pre-line;
-  text-align:left;
-}
-
-.signature {
-  color:var(--pink);
-  font-family:'Playfair Display',serif;
-  font-size:23px;
-  margin-top:25px;
-  line-height:1.8;
-}
-
-.gallery {
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
-  gap:18px;
-  margin-top:25px;
-}
-
-.photo-frame {
-  background:#ffffff0d;
-  padding:9px;
-  border:1px solid #f5a9ca55;
-  border-radius:17px;
-  transition:.35s;
-}
-
-.photo-frame:hover {
-  transform:translateY(-7px) rotate(-1deg);
-}
-
-.photo-frame img {
-  width:100%;
-  height:260px;
-  object-fit:cover;
-  display:block;
-  border-radius:11px;
-  background:#202c4a;
-}
-
-.photo-caption {
-  color:#f6c6dc;
-  padding:12px 5px 5px;
-  font-family:'Playfair Display',serif;
-  font-style:italic;
-}
-
-.music-card {
-  background:#f5a9ca0c;
-  border:1px solid #f5a9ca44;
-  border-radius:18px;
-  padding:25px;
-}
-
-.music-title {
-  color:var(--pink);
-  font-family:'Playfair Display',serif;
-  font-size:21px;
-  margin-bottom:12px;
-}
-
-audio {
-  width:100%;
-  margin-top:12px;
-}
-
-.countdown {
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:10px;
-  margin-top:25px;
-}
-
-.time-box {
-  background:#f5a9ca12;
-  border:1px solid #f5a9ca40;
-  border-radius:15px;
-  padding:18px 5px;
-  text-align:center;
-}
-
-.time-box strong {
-  display:block;
-  color:var(--pink);
-  font-size:clamp(22px,5vw,35px);
-}
-
-.time-box span {
-  color:#d8c6d3;
-  font-size:11px;
-  letter-spacing:1px;
-}
-
-.notes-grid {
-  display:grid;
-  gap:13px;
-}
-
-.note-btn {
-  width:100%;
-  padding:17px;
-  border:1px solid #f5a9ca44;
-  background:#ffffff08;
-  border-radius:15px;
-  color:#ffe1ee;
-  text-align:left;
-  font-size:15px;
-  cursor:pointer;
-}
-
-.note-content {
-  display:none;
-  padding:18px;
-  margin-top:8px;
-  border-radius:13px;
-  background:#f5a9ca12;
-  color:#f8e8f0;
-  line-height:1.9;
-  text-align:left;
-}
-
-.gift-area {
-  text-align:center;
-  padding:15px 0;
-}
-
-.gift-icon {
-  font-size:75px;
-  display:block;
-  margin-bottom:20px;
-  animation:float 3s infinite;
-}
-
-#giftButton:disabled {
-  opacity:.45;
-  cursor:not-allowed;
-  transform:none;
-  box-shadow:none;
-}
-
-#giftMessage {
-  display:none;
-  margin-top:25px;
-  padding:25px;
-  border:1px solid #f5a9ca55;
-  background:#f5a9ca12;
-  border-radius:18px;
-  color:#ffe8f2;
-  line-height:2;
-  text-align:left;
-  animation:appear .8s ease;
-}
-
-.footer {
-  text-align:center;
-  padding:65px 20px;
-  color:#d8c3d2;
-  line-height:2;
-}
-
-.footer .heart {
-  font-size:25px;
-  color:var(--pink);
-}
-
-@keyframes pulse {
-  50% { transform:scale(1.12); }
-}
-
-@keyframes float {
-  50% { transform:translateY(-8px); }
-}
-
-@keyframes appear {
-  from { opacity:0; transform:translateY(15px); }
-  to { opacity:1; transform:translateY(0); }
-}
-
-@media(max-width:520px) {
-  .countdown { gap:6px; }
-  .time-box { padding:14px 2px; }
-  .photo-frame img { height:230px; }
-  section { border-radius:19px; }
-}
-</style>
-</head>
-
-<body>
-
-<!-- PASSWORD SCREEN -->
-<div id="lockScreen">
-  <div class="lock-heart">♡</div>
-  <p class="eyebrow">A PRIVATE LITTLE SURPRISE</p>
-  <h1>For Jojo</h1>
-  <p>Somewhere in this little world, something special is waiting for you.</p>
-  <p>Enter your secret password to begin.</p>
-
-  <input id="passwordInput"
-    type="password"
-    placeholder="Your secret password"
-    autocomplete="off">
-
-  <button class="main-btn" onclick="unlockSite()">
-    Open My Little World ♡
-  </button>
-
-  <p id="errorMessage"></p>
-</div>
-
-<!-- HERO -->
-<header class="hero">
-  <p class="eyebrow">A LITTLE WORLD MADE FOR YOU</p>
-  <h1>Jojo's<br>Little World</h1>
-  <p class="subtitle">A collection of memories, words and little surprises.</p>
-  <p class="hero-date">MARCH 22 · 2027</p>
-  <div class="scroll">SCROLL TO EXPLORE ↓</div>
-</header>
-
-<!-- INTRO -->
-<section>
-  <p class="section-tag">A SPECIAL DAY</p>
-  <h2>Happy Birthday, Jojo ♡</h2>
-  <p class="section-intro">
-    Some people make ordinary days feel special without even trying.
-    This little place was made to celebrate you, the memories,
-    the laughs, and all the little things worth remembering.
-  </p>
-</section>
-
-<!-- MAIN LETTER -->
-<section>
-  <p class="section-tag">WORDS FROM THE HEART</p>
-  <h2>A Letter For You 💌</h2>
-
-  <div class="letter">Dear Jojo,
-
-I honestly don't even know where to start, because there are so many things I could say, and somehow words never feel enough to describe how much a person can mean to you.
-
-First, I hope you always know how special you are. You have a way of making normal conversations turn into memories, and simple moments become things worth remembering.
-
-I'm genuinely grateful that our paths crossed. For every laugh, every random conversation, every silly joke, every unexpected moment, and even the little arguments that somehow become funny later.
-
-You might not always notice it, but sometimes the smallest things make the biggest difference. A random message, a stupid joke, a simple conversation, or even just knowing that someone is there can make an ordinary day feel a little better.
-
-And honestly, that's what makes you special to me.
-
-I hope you never underestimate the place you have in the lives of the people who care about you. You deserve genuine happiness, people who appreciate you, and moments that make you forget all the stressful things around you.
-
-I hope this new year of your life brings you happiness, success, peace, and all the beautiful things you deserve. I hope you achieve everything you've been dreaming about, even the things you haven't told anyone yet.
-
-I hope you keep smiling, keep being yourself, and never let anything make you forget how valuable you are.
-
-And most importantly, I hope we keep collecting memories.
-
-I hope we keep talking, laughing, joking, sharing random stories, and being there for each other through all the different chapters of life.
-
-I know life changes. People get busy, days pass, priorities change, and sometimes things aren't exactly the same as they used to be. But if there's one thing I truly wish for, it's that we never lose the connection we've built.
-
-No matter how busy life gets, I hope we never become strangers. I hope that even years from now, we can look back at these moments and smile, remembering all the little things that made this friendship what it is.
-
-There are probably many things I haven't said, and maybe I don't always know how to express them properly. But I hope this little surprise says at least a part of what words sometimes fail to explain.
-
-Thank you for the laughs, the memories, the random moments, and simply being you.
-
-You're someone I'm genuinely glad became part of my story, and I hope you stay a beautiful part of the chapters still waiting to be written.
-
-So here's to another year of your life, new beginnings, unexpected happiness, unforgettable memories, and countless reasons to smile.
-
-Happy Birthday, Jojo. ♡
-
-I hope this little world reminds you that you are appreciated more than you know.</div>
-
-  <div class="signature">With lots of care,<br>Adam ♡</div>
-</section>
-
-<!-- SECOND LETTER -->
-<section>
-  <p class="section-tag">SOMETHING I NEVER EXPLAINED</p>
-  <h2>There's More I Want You To Know ♡</h2>
-
-  <div class="letter">There's something I don't think I've ever explained properly.
-
-You became one of those people whose presence can change the feeling of an entire day. Somehow, even the most ordinary conversations with you become moments I find myself remembering later.
-
-I don't know if you realize how many times you've made me smile without even trying. Sometimes it's just a message, a random joke, or something completely meaningless to anyone else, but somehow it stays with me.
-
-If I could choose one thing, it would be to never let the beautiful things we've built become just memories.
-
-I don't want perfect moments, perfect conversations, or a perfect friendship. I just want the real thing. The random talks, the laughter, the silly arguments, the unexpected messages, and all the little things that make our connection ours.
-
-And if there's one thing I hope you never question, it's that your presence genuinely matters to me.
-
-Maybe I don't always find the right words, and maybe I don't say everything I feel, but some people are simply too important to be treated like ordinary people.
-
-And you're one of them.
-
-I hope one day, when you look back at this little surprise, you remember that someone genuinely wished to see you happy, not just on your birthday, but on all the ordinary days too.</div>
-
-  <div class="signature">With care,<br>Adam ♡</div>
-</section>
-
-<!-- PHOTOS -->
-<section>
-  <p class="section-tag">LITTLE MEMORIES</p>
-  <h2>Our Photo Gallery 📸</h2>
-  <p class="section-intro">
-    A few pictures, a few moments, and memories worth keeping.
-  </p>
-
-  <div class="gallery">
-    <div class="photo-frame">
-      <img src="./jojo1.jpg" alt="Our first memory">
-      <p class="photo-caption">A memory to keep ♡</p>
-    </div>
-
-    <div class="photo-frame">
-      <img src="./jojo2.jpg" alt="A special memory">
-      <p class="photo-caption">One of those moments ♡</p>
-    </div>
-
-    <div class="photo-frame">
-      <img src="./jojo3.jpg" alt="Another lovely memory">
-      <p class="photo-caption">Something worth remembering ♡</p>
-    </div>
-  </div>
-</section>
-
-<!-- MUSIC -->
-<section>
-  <p class="section-tag">A SONG FOR YOU</p>
-  <h2>Our Little Soundtrack 🎵</h2>
-
-  <div class="music-card">
-    <p class="music-title">A song to make this day special</p>
-    <p class="section-intro">
-      Press play and enjoy your little birthday moment.
-    </p>
-
-    <audio controls preload="metadata">
-      <source src="./Albumaty.Com_amrw_dyab_wenty_gnby.mp3"
-        type="audio/mpeg">
-      Your browser does not support audio.
-    </audio>
-  </div>
-</section>
-
-<!-- COUNTDOWN -->
-<section>
-  <p class="section-tag">THE BIG DAY</p>
-  <h2>Counting Down To You 🎀</h2>
-  <p class="section-intro" id="countdownCaption">
-    Every little second brings us closer to your day.
-  </p>
-
-  <div class="countdown">
-    <div class="time-box">
-      <strong id="days">--</strong>
-      <span>DAYS</span>
-    </div>
-    <div class="time-box">
-      <strong id="hours">--</strong>
-      <span>HOURS</span>
-    </div>
-    <div class="time-box">
-      <strong id="minutes">--</strong>
-      <span>MINUTES</span>
-    </div>
-    <div class="time-box">
-      <strong id="seconds">--</strong>
-      <span>SECONDS</span>
-    </div>
-  </div>
-</section>
-
-<!-- HIDDEN NOTES -->
-<section>
-  <p class="section-tag">LITTLE THOUGHTS</p>
-  <h2>Things I Never Said 💭</h2>
-  <p class="section-intro">A few little reminders, just for you.</p>
-
-  <div class="notes-grid">
-    <div>
-      <button class="note-btn" onclick="toggleNote(1)">
-        ♡ A little reminder
-      </button>
-      <div class="note-content" id="note1">
-        Never forget that you deserve all the happiness in the world.
-        Keep being yourself, because that's already something special.
+from pathlib import Path
+
+src = Path("/mnt/data/Pasted text(20261126-151225).txt")
+html = src.read_text(encoding="utf-8")
+
+extra_css = r"""
+/* EXTRA LITTLE SURPRISES */
+.extra-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:22px}
+.extra-card{background:#ffffff09;border:1px solid #f5a9ca44;border-radius:18px;padding:20px}
+.extra-card h3{font-family:'Playfair Display',serif;color:var(--pink);font-size:21px;margin-bottom:10px}
+.extra-card p{color:#eadde7;line-height:1.85}
+.extra-btn{border:1px solid #f5a9ca66;background:#f5a9ca16;color:#ffe5f0;border-radius:13px;padding:12px 16px;cursor:pointer;margin:7px 5px 0 0;font-size:14px;transition:.2s}
+.extra-btn:hover{background:#f5a9ca30;transform:translateY(-2px)}
+.extra-result{display:none;margin-top:14px;padding:15px;border-radius:13px;background:#f5a9ca14;color:#ffe8f2;line-height:1.9}
+.quiz-options{display:grid;gap:9px;margin-top:15px}
+.quiz-option{width:100%;text-align:left;border:1px solid #f5a9ca44;background:#ffffff09;color:#fff0f6;border-radius:12px;padding:13px;cursor:pointer}
+.quiz-option:hover{background:#f5a9ca20}
+.quiz-option:disabled{cursor:default;opacity:.8}
+.quiz-progress{height:6px;background:#ffffff18;border-radius:20px;overflow:hidden;margin:15px 0}
+.quiz-progress span{display:block;height:100%;width:0;background:var(--pink);transition:width .25s}
+.scratch-card{border:1px dashed #f5a9ca99;border-radius:16px;padding:25px 18px;text-align:center;background:linear-gradient(135deg,#f5a9ca18,#ffffff08);cursor:pointer;user-select:none}
+.scratch-card .cover{font-size:20px;color:var(--pink);font-family:'Playfair Display',serif}
+.star-field{display:flex;justify-content:center;flex-wrap:wrap;gap:12px;margin:18px 0}
+.star{font-size:35px;cursor:pointer;filter:grayscale(1);opacity:.55;transition:.2s}
+.star.collected{filter:none;opacity:1;transform:scale(1.2)}
+.future-note{font-family:'Playfair Display',serif;color:#f8d5e5;font-size:18px;line-height:1.9}
+@media(max-width:520px){.extra-card{padding:17px}.star{font-size:31px}}
+"""
+
+extra_sections = r"""
+<!-- EXTRA INTERACTIVE SURPRISES -->
+<section id="little-surprises">
+  <p class="section-tag">A FEW MORE LITTLE THINGS</p>
+  <h2>Just For You, Jojo ✨</h2>
+  <p class="section-intro">A few small surprises to explore. Take your time and open whichever one makes you smile.</p>
+
+  <div class="extra-grid">
+    <div class="extra-card">
+      <h3>A Secret Note ♡</h3>
+      <p>There's a little message hiding here. Tap the card to reveal it.</p>
+      <div class="scratch-card" role="button" tabindex="0" onclick="revealSecret()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();revealSecret();}">
+        <div class="cover" id="secretCover">Tap to uncover ♡</div>
+        <div class="extra-result" id="secretMessage">
+          You're one of those people who make ordinary days feel a little more special. Never forget that your presence matters, and that you deserve kindness on the easy days and the difficult ones too. ♡
+        </div>
       </div>
     </div>
 
-    <div>
-      <button class="note-btn" onclick="toggleNote(2)">
-        ♡ One more thing
-      </button>
-      <div class="note-content" id="note2">
-        Thank you for every laugh, every random conversation,
-        and every memory. They mean more than you probably realize.
+    <div class="extra-card">
+      <h3>Open When... 💌</h3>
+      <p>Choose a little letter for the kind of day you're having.</p>
+      <button class="extra-btn" onclick="openLetter('sad')">When you feel down</button>
+      <button class="extra-btn" onclick="openLetter('bored')">When you're bored</button>
+      <button class="extra-btn" onclick="openLetter('laugh')">When you need a laugh</button>
+      <button class="extra-btn" onclick="openLetter('memories')">When you miss old moments</button>
+      <div class="extra-result" id="openWhenResult" aria-live="polite"></div>
+    </div>
+
+    <div class="extra-card">
+      <h3>A Tiny Jojo Quiz 🎀</h3>
+      <p>Seven quick questions about this little birthday world. See how many details you noticed!</p>
+      <div id="quizArea">
+        <button class="extra-btn" onclick="startQuiz()">Start the quiz ♡</button>
       </div>
     </div>
 
-    <div>
-      <button class="note-btn" onclick="toggleNote(3)">
-        ♡ My wish for you
-      </button>
-      <div class="note-content" id="note3">
-        I hope your next chapter is full of good surprises,
-        beautiful moments, and reasons to smile every day.
+    <div class="extra-card">
+      <h3>Collect A Few Stars ⭐</h3>
+      <p>Tap all five stars to collect a tiny birthday wish.</p>
+      <div class="star-field" id="starField">
+        <span class="star" role="button" tabindex="0" aria-label="Star 1" onclick="collectStar(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();collectStar(this);}">★</span>
+        <span class="star" role="button" tabindex="0" aria-label="Star 2" onclick="collectStar(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();collectStar(this);}">★</span>
+        <span class="star" role="button" tabindex="0" aria-label="Star 3" onclick="collectStar(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();collectStar(this);}">★</span>
+        <span class="star" role="button" tabindex="0" aria-label="Star 4" onclick="collectStar(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();collectStar(this);}">★</span>
+        <span class="star" role="button" tabindex="0" aria-label="Star 5" onclick="collectStar(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();collectStar(this);}">★</span>
       </div>
+      <div class="extra-result" id="starResult">You collected all five! I hope your days are filled with little reasons to smile. ♡</div>
     </div>
   </div>
 </section>
 
-<!-- BIRTHDAY GIFT -->
 <section>
-  <p class="section-tag">SOMETHING IS WAITING</p>
-  <h2>Your Birthday Gift 🎁</h2>
-
-  <div class="gift-area">
-    <span class="gift-icon">🎁</span>
-
-    <p class="section-intro" id="giftStatus">
-      This little gift is waiting for your birthday.
-      Come back on March 22, 2027 to open it.
-    </p>
-
-    <button class="main-btn" id="giftButton"
-      onclick="openGift()" disabled>
-      Locked Until Your Birthday 🔒
-    </button>
-
-    <div id="giftMessage">
-      <h2>Happy Birthday, Jojo! 💗</h2>
-
-      Today is your day, and I hope it becomes one of the
-      happiest days of your year.
-
-      I hope you get everything you've been wishing for,
-      that you laugh a lot, and that you make beautiful
-      memories you'll always remember.
-
-      This little website is just a small reminder that
-      your friendship is appreciated and that I'm glad
-      we got to know each other.
-
-      Thank you for being part of so many good memories.
-
-      I hope we have many more laughs, conversations,
-      and moments ahead.
-
-      Enjoy your day, Jojo. You deserve the best.
-
-      <br><br>
-      <strong style="color:#f5a9ca">
-        Happy Birthday ♡
-        <br>From Adam
-      </strong>
-    </div>
+  <p class="section-tag">A NOTE FROM THE FUTURE</p>
+  <h2>For You, A Little Later 💗</h2>
+  <div class="extra-card">
+    <p class="future-note">Dear Jojo,<br><br>
+    If you're reading this some time from now, I hope life has been kind to you. I hope you've grown, learned new things, laughed until your cheeks hurt, and found people and places that make you feel appreciated.<br><br>
+    Whatever has changed, I hope you still make room for the little things that make you happy. Keep chasing what matters to you, be proud of how far you've come, and remember that you deserve good things—not just today, but every day.<br><br>
+    Here's to all the chapters still waiting for you. ♡</p>
   </div>
 </section>
+"""
 
-<!-- FOOTER -->
-<footer class="footer">
-  <div class="heart">♡</div>
-  Made with care by Adam.
-  <br>
-  A little world, just for Jojo.
-  <br>
-  <span style="color:#e8c994">March 22, 2027</span>
-</footer>
-
-<script>
-/* PASSWORD */
-function unlockSite() {
-  const value = document.getElementById("passwordInput").value;
-
-  if (value === "Jojo2203") {
-    document.getElementById("lockScreen").style.display = "none";
-  } else {
-    document.getElementById("errorMessage").textContent =
-      "That isn't the right password. Try again ♡";
-  }
+extra_js = r"""
+/* EXTRA SURPRISES */
+function revealSecret() {
+  const message = document.getElementById("secretMessage");
+  const cover = document.getElementById("secretCover");
+  message.style.display = "block";
+  cover.textContent = "A little message for you ♡";
 }
 
-document.getElementById("passwordInput")
-.addEventListener("keydown", function(event) {
-  if (event.key === "Enter") unlockSite();
-});
+function openLetter(type) {
+  const messages = {
+    sad: "If today feels a little heavy, take things one step at a time. You don't have to have everything figured out right now. Be patient with yourself; brighter moments can still be ahead. ♡",
+    bored: "Official Jojo mission: find one tiny thing that makes today more fun. Play a song, watch something silly, or do absolutely nothing for five minutes. Mission accepted? 🎀",
+    laugh: "This is your reminder that you're legally allowed to laugh at the most ridiculous things. Even the silly jokes deserve a second chance. Hope this made you smile. ♡",
+    memories: "Some moments seem ordinary while they're happening, then become the ones we remember most. I'm glad we have little memories to look back on, and I hope there are many more ahead. ♡"
+  };
+  const box = document.getElementById("openWhenResult");
+  box.textContent = messages[type] || "";
+  box.style.display = "block";
+}
 
-/* COUNTDOWN */
-const birthday = new Date(2027, 2, 22, 0, 0, 0);
+const quizQuestions = [
+  {q:"What is the name of this little website?",a:["Jojo's Little World","A Secret Garden","The Pink Diary"],correct:0},
+  {q:"Which two colors inspired the website?",a:["Red and black","Pink and navy","Purple and white"],correct:1},
+  {q:"When is Jojo's birthday celebration on this website?",a:["March 22, 2027","April 2, 2027","May 22, 2027"],correct:0},
+  {q:"What is the heading of the main letter?",a:["A Note For Today","A Letter For You","A Small Goodbye"],correct:1},
+  {q:"What can you find in the music section?",a:["A podcast","A birthday song player","A voice message"],correct:1},
+  {q:"What is waiting in the birthday gift section?",a:["A message to open on her birthday","A daily reminder","A photo filter"],correct:0},
+  {q:"Who made this little world?",a:["A secret admirer","Adam","A team of designers"],correct:1}
+];
+let quizIndex = 0;
+let quizScore = 0;
 
-function updateCountdown() {
-  const now = new Date();
-  const distance = birthday.getTime() - now.getTime();
+function startQuiz() {
+  quizIndex = 0;
+  quizScore = 0;
+  showQuizQuestion();
+}
 
-  if (distance <= 0) {
-    document.getElementById("countdownCaption").textContent =
-      "It's your special day! Happy Birthday, Jojo! ♡";
+function showQuizQuestion() {
+  const area = document.getElementById("quizArea");
+  const item = quizQuestions[quizIndex];
+  const progress = Math.round((quizIndex / quizQuestions.length) * 100);
+  area.innerHTML = `<p style="color:#e8c994">Question ${quizIndex + 1} of ${quizQuestions.length}</p>
+    <div class="quiz-progress"><span style="width:${progress}%"></span></div>
+    <h3 style="font-family:'Playfair Display',serif;color:#f5a9ca;margin:12px 0">${item.q}</h3>
+    <div class="quiz-options">${item.a.map((answer,index) => `<button class="quiz-option" onclick="answerQuiz(${index})">${answer}</button>`).join("")}</div>
+    <p id="quizFeedback" class="extra-result" aria-live="polite"></p>`;
+}
 
-    document.getElementById("days").textContent = "00";
-    document.getElementById("hours").textContent = "00";
-    document.getElementById("minutes").textContent = "00";
-    document.getElementById("seconds").textContent = "00";
+function answerQuiz(choice) {
+  const item = quizQuestions[quizIndex];
+  const buttons = document.querySelectorAll("#quizArea .quiz-option");
+  buttons.forEach(button => button.disabled = true);
+  const feedback = document.getElementById("quizFeedback");
+  const correct = choice === item.correct;
+  if (correct) quizScore++;
+  feedback.textContent = correct ? "That's right! ♡" : `The answer is: ${item.a[item.correct]}`;
+  feedback.style.display = "block";
+  const area = document.getElementById("quizArea");
+  const next = document.createElement("button");
+  next.className = "extra-btn";
+  next.textContent = quizIndex === quizQuestions.length - 1 ? "See my result ♡" : "Next question →";
+  next.onclick = nextQuizQuestion;
+  area.appendChild(next);
+}
 
-    document.getElementById("giftStatus").textContent =
-      "Your birthday is here! Your gift is ready.";
-
-    const giftButton = document.getElementById("giftButton");
-    giftButton.disabled = false;
-    giftButton.textContent = "Open Your Birthday Gift 🎁";
+function nextQuizQuestion() {
+  quizIndex++;
+  if (quizIndex < quizQuestions.length) {
+    showQuizQuestion();
     return;
   }
-
-  document.getElementById("days").textContent =
-    Math.floor(distance / 86400000);
-
-  document.getElementById("hours").textContent =
-    Math.floor((distance % 86400000) / 3600000);
-
-  document.getElementById("minutes").textContent =
-    Math.floor((distance % 3600000) / 60000);
-
-  document.getElementById("seconds").textContent =
-    Math.floor((distance % 60000) / 1000);
+  const area = document.getElementById("quizArea");
+  let message = "A lovely try! The best part is that you explored every little corner of this page. ♡";
+  if (quizScore === quizQuestions.length) message = "Perfect score! You noticed every detail. Jojo, you're officially the expert of this little world! 🎀";
+  else if (quizScore >= 5) message = "Amazing! You noticed almost every detail. This little world has been explored properly. ♡";
+  else if (quizScore >= 3) message = "Well done! You found quite a few of the little details. Hope you enjoyed the tour. 💗";
+  area.innerHTML = `<h3 style="font-family:'Playfair Display',serif;color:#f5a9ca">You got ${quizScore} out of ${quizQuestions.length}!</h3><p style="color:#eadde7;line-height:1.8;margin-top:10px">${message}</p><button class="extra-btn" onclick="startQuiz()">Play again</button>`;
 }
 
-updateCountdown();
-setInterval(updateCountdown, 1000);
-
-/* NOTES */
-function toggleNote(number) {
-  const note = document.getElementById("note" + number);
-  note.style.display =
-    note.style.display === "block" ? "none" : "block";
+function collectStar(star) {
+  if (star.classList.contains("collected")) return;
+  star.classList.add("collected");
+  const collected = document.querySelectorAll("#starField .star.collected").length;
+  if (collected === 5) {
+    document.getElementById("starResult").style.display = "block";
+  }
 }
+"""
 
-/* GIFT */
-function openGift() {
-  const now = new Date();
+if "</style>" not in html or "</footer>" not in html or "</script>" not in html:
+    raise ValueError("The uploaded HTML is missing an expected insertion point.")
 
-  const birthdayReached =
-    now.getFullYear() > 2027 ||
-    (now.getFullYear() === 2027 && now.getMonth() > 2) ||
-    (now.getFullYear() === 2027 && now.getMonth() === 2 &&
-      now.getDate() >= 22);
+html = html.replace("</style>", extra_css + "\n</style>", 1)
+html = html.replace("</footer>", "</footer>\n\n" + extra_sections, 1)
+html = html.replace("</script>", extra_js + "\n</script>", 1)
 
-  if (!birthdayReached) return;
-
-  document.getElementById("giftMessage").style.display = "block";
-  document.getElementById("giftButton").textContent =
-    "Your Gift Is Open ♡";
-
-  document.getElementById("giftMessage").scrollIntoView({
-    behavior:"smooth",
-    block:"center"
-  });
-}
-</script>
-
-</body>
-</html>
+# Small accessibility/usability improvement: allow Enter to submit password already supported.
+# Keep all existing photo and audio paths unchanged.
+out = Path("/mnt/data/jojo-birthday-complete.html")
+out.write_text(html, encoding="utf-8")
+print(f"Created: {out}")
+print(f"Size: {out.stat().st_size:,} bytes")
