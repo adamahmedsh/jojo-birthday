@@ -2,258 +2,292 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Jojo Admin Dashboard</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#10182f">
+  <title>Jojo Wishes - Adam's Private Page</title>
 
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{
-  background:#10182f;
-  color:#fff9fc;
-  font-family:Arial,sans-serif;
-  padding:25px;
-}
-.container{max-width:950px;margin:40px auto}
-h1{color:#f5a9ca;margin-bottom:10px}
-.subtitle{color:#d8c3d2;margin-bottom:25px}
-.card{
-  background:#182443;
-  border:1px solid #f5a9ca55;
-  border-radius:18px;
-  padding:24px;
-  margin-bottom:20px;
-}
-input{
-  width:100%;
-  padding:14px;
-  margin:8px 0;
-  border-radius:10px;
-  border:1px solid #f5a9ca66;
-  background:#10182f;
-  color:white;
-}
-button{
-  padding:12px 20px;
-  border:0;
-  border-radius:25px;
-  background:#f5a9ca;
-  color:#10182f;
-  font-weight:bold;
-  cursor:pointer;
-  margin-top:10px;
-}
-.secondary{background:#303e61;color:white}
-.hidden{display:none}
-.error{color:#ff9bad;margin-top:12px}
-.stats{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
-  gap:12px;
-}
-.stat{
-  background:#10182f;
-  border:1px solid #f5a9ca44;
-  border-radius:14px;
-  padding:18px;
-}
-.stat strong{
-  display:block;
-  color:#f5a9ca;
-  font-size:28px;
-  margin-top:8px;
-}
-.event{
-  padding:15px 5px;
-  border-bottom:1px solid #ffffff20;
-  line-height:1.8;
-}
-.event:last-child{border:0}
-.muted{color:#c9b8c8;font-size:13px}
-</style>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      padding: 25px 16px;
+      background: #10182f;
+      color: #fff9fc;
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    main {
+      width: min(720px, 100%);
+      margin: 45px auto;
+    }
+
+    .card {
+      background: linear-gradient(145deg, #ffffff12, #ffffff06);
+      border: 1px solid #f5a9ca55;
+      border-radius: 22px;
+      padding: 25px;
+      margin-bottom: 20px;
+      box-shadow: 0 18px 50px #0003;
+    }
+
+    h1, h2 {
+      color: #f5a9ca;
+      font-family: 'Playfair Display', serif;
+    }
+
+    h1 { font-size: 35px; }
+    p { color: #e6dce7; line-height: 1.8; }
+
+    input {
+      display: block;
+      width: 100%;
+      margin: 12px 0;
+      padding: 14px;
+      border-radius: 12px;
+      border: 1px solid #f5a9ca77;
+      background: #10182f;
+      color: white;
+      font: inherit;
+    }
+
+    button {
+      padding: 13px 20px;
+      border: 0;
+      border-radius: 25px;
+      background: #f5a9ca;
+      color: #10182f;
+      font-weight: 700;
+      font: inherit;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      opacity: .6;
+      cursor: wait;
+    }
+
+    .wish {
+      border: 1px solid #f5a9ca55;
+      background: #ffffff0a;
+      border-radius: 15px;
+      padding: 18px;
+      margin: 14px 0;
+      overflow-wrap: anywhere;
+    }
+
+    .date {
+      color: #e8c994;
+      font-size: 12px;
+      margin-top: 12px;
+    }
+
+    #status { min-height: 24px; }
+    #dashboard { display: none; }
+
+    .top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .small {
+      background: #ffffff12;
+      color: #ffe5f0;
+      border: 1px solid #f5a9ca66;
+    }
+  </style>
 </head>
 
 <body>
-<div class="container">
+<main>
+  <section class="card" id="loginPanel">
+    <h1>Adam's Private Page ♡</h1>
+    <p>
+      Sign in with your Firebase account to view the wishes
+      that Jojo has chosen to send you.
+    </p>
 
-  <h1>Jojo's Little World ♡</h1>
-  <p class="subtitle">Private Activity Dashboard</p>
+    <form id="loginForm">
+      <input
+        id="email"
+        type="email"
+        placeholder="Your Firebase account email"
+        autocomplete="username"
+        required
+      >
 
-  <div class="card" id="loginCard">
-    <h2>Admin Login</h2>
-    <p class="muted">Sign in with your Firebase account.</p>
+      <input
+        id="password"
+        type="password"
+        placeholder="Your password"
+        autocomplete="current-password"
+        required
+      >
 
-    <input id="email" type="email" placeholder="Email">
-    <input id="password" type="password" placeholder="Password">
+      <button id="loginButton" type="submit">Sign In</button>
+    </form>
 
-    <button id="loginButton" onclick="login()">Sign In</button>
-    <p class="error" id="loginError"></p>
-  </div>
+    <p id="loginStatus" aria-live="polite"></p>
+  </section>
 
-  <div id="dashboard" class="hidden">
-
+  <section id="dashboard">
     <div class="card">
-      <h2>Welcome, Adam ♡</h2>
-      <p class="muted">Website activity overview</p>
-      <button class="secondary" onclick="logout()">Log Out</button>
-      <button onclick="loadEvents()">Refresh Data</button>
-    </div>
-
-    <div class="card">
-      <h2>Activity Statistics</h2>
-      <br>
-      <div class="stats">
-        <div class="stat">
-          Total Events
-          <strong id="totalEvents">0</strong>
-        </div>
-        <div class="stat">
-          Song Plays
-          <strong id="songPlays">0</strong>
-        </div>
-        <div class="stat">
-          Gallery Opens
-          <strong id="galleryOpens">0</strong>
-        </div>
-        <div class="stat">
-          Gift Opens
-          <strong id="giftOpens">0</strong>
-        </div>
+      <div class="top">
+        <h1>Jojo's Wishes ♡</h1>
+        <button class="small" id="logoutButton">Sign Out</button>
       </div>
+      <p>These are the wishes Jojo chose to send to you.</p>
+      <button id="refreshButton">Refresh Wishes ↻</button>
+      <p id="status" aria-live="polite"></p>
     </div>
 
-    <div class="card">
-      <h2>Recent Activity</h2>
-      <p class="muted">Only events visitors agreed to share are shown.</p>
-      <div id="eventsList">Loading...</div>
-    </div>
-
-  </div>
-</div>
+    <div id="wishList"></div>
+  </section>
+</main>
 
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
 
 <script>
-const firebaseConfig = {
-  apiKey: "AIzaSyB1RCFwXSuvIuzbeQTCAmveaIrGlNbOwK0",
-  authDomain: "jojo-birthday-31465.firebaseapp.com",
-  projectId: "jojo-birthday-31465",
-  storageBucket: "jojo-birthday-31465.firebasestorage.app",
-  messagingSenderId: "905927546263",
-  appId: "1:905927546263:web:ee44531f6ef64965f4e0d2",
-  measurementId: "G-XFLRG5KMZS"
-};
+  const firebaseConfig = {
+    apiKey: "AIzaSyB1RCFwXSuvIuzbeQTCAmveaIrGlNbOwK0",
+    authDomain: "jojo-birthday-31465.firebaseapp.com",
+    projectId: "jojo-birthday-31465",
+    storageBucket: "jojo-birthday-31465.firebasestorage.app",
+    messagingSenderId: "905927546263",
+    appId: "1:905927546263:web:ee44531f6ef64965f4e0d2",
+    measurementId: "G-XFLRG5KMZS"
+  };
 
-firebase.initializeApp(firebaseConfig);
+  const OWNER_UID = "rOmhTbn4mjhLCaJT0FNL62XMMD32";
 
-const auth = firebase.auth();
-const db = firebase.firestore();
-
-const ADMIN_UID = "rOmhTbn4mjhLCaJT0FNL62XMMD32";
-
-function showError(message){
-  document.getElementById("loginError").textContent = message;
-}
-
-async function login(){
-  const email = document.getElementById("email").value.trim();
-  const password = document.getElementById("password").value;
-  const button = document.getElementById("loginButton");
-
-  showError("");
-
-  if(!email || !password){
-    showError("Enter your email and password.");
-    return;
+  if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
   }
 
-  button.disabled = true;
-  button.textContent = "Signing in...";
+  const auth = firebase.auth();
+  const db = firebase.firestore();
 
-  try{
-    const result = await auth.signInWithEmailAndPassword(email,password);
-
-    if(result.user.uid !== ADMIN_UID){
-      await auth.signOut();
-      showError("This account is not authorized.");
-    }
-  }catch(error){
-    showError(error.message);
-  }finally{
-    button.disabled = false;
-    button.textContent = "Sign In";
-  }
-}
-
-auth.onAuthStateChanged(async user => {
-  const loginCard = document.getElementById("loginCard");
+  const loginPanel = document.getElementById("loginPanel");
   const dashboard = document.getElementById("dashboard");
+  const loginStatus = document.getElementById("loginStatus");
+  const status = document.getElementById("status");
+  const wishList = document.getElementById("wishList");
+  const loginButton = document.getElementById("loginButton");
 
-  if(user && user.uid === ADMIN_UID){
-    loginCard.classList.add("hidden");
-    dashboard.classList.remove("hidden");
-    await loadEvents();
-  }else{
-    loginCard.classList.remove("hidden");
-    dashboard.classList.add("hidden");
-  }
-});
+  document.getElementById("loginForm").addEventListener("submit", async function(event) {
+    event.preventDefault();
 
-async function loadEvents(){
-  const list = document.getElementById("eventsList");
-  list.textContent = "Loading...";
+    loginButton.disabled = true;
+    loginStatus.textContent = "Signing in...";
 
-  try{
-    const snapshot = await db.collection("events")
-      .orderBy("createdAt","desc")
-      .limit(100)
-      .get();
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value;
 
-    const events = snapshot.docs.map(doc => doc.data());
+    try {
+      const result = await auth.signInWithEmailAndPassword(email, password);
 
-    document.getElementById("totalEvents").textContent = events.length;
-    document.getElementById("songPlays").textContent =
-      events.filter(e => e.event === "song_play").length;
-    document.getElementById("galleryOpens").textContent =
-      events.filter(e => e.event === "gallery_open").length;
-    document.getElementById("giftOpens").textContent =
-      events.filter(e => e.event === "gift_open").length;
+      if (result.user.uid !== OWNER_UID) {
+        await auth.signOut();
+        throw new Error("This account is not allowed to view these wishes.");
+      }
 
-    list.replaceChildren();
+      loginStatus.textContent = "";
+      await showDashboard();
 
-    if(events.length === 0){
-      list.textContent = "No activity recorded yet.";
-      return;
+    } catch (error) {
+      loginStatus.textContent =
+        "Sign-in failed. Check your account details and try again.";
+      console.error(error);
+    } finally {
+      loginButton.disabled = false;
     }
+  });
 
-    snapshot.docs.forEach(doc => {
-      const data = doc.data();
-      const item = document.createElement("div");
-      item.className = "event";
-
-      const name = document.createElement("strong");
-      name.textContent = (data.event || "Unknown event").replaceAll("_"," ");
-
-      const date = document.createElement("div");
-      date.className = "muted";
-      date.textContent = data.createdAt
-        ? data.createdAt.toDate().toLocaleString()
-        : "Date unavailable";
-
-      item.append(name,date);
-      list.appendChild(item);
-    });
-
-  }catch(error){
-    list.textContent = "Could not load events: " + error.message;
+  async function showDashboard() {
+    loginPanel.style.display = "none";
+    dashboard.style.display = "block";
+    await loadWishes();
   }
-}
 
-async function logout(){
-  await auth.signOut();
-}
+  async function loadWishes() {
+    wishList.innerHTML = "";
+    status.textContent = "Loading wishes...";
+
+    try {
+      const snapshot = await db.collection("wishes")
+        .orderBy("createdAt", "desc")
+        .get();
+
+      if (snapshot.empty) {
+        status.textContent = "No wishes have been sent yet.";
+        return;
+      }
+
+      status.textContent = snapshot.size + " wish(es) received.";
+
+      snapshot.forEach(doc => {
+        const data = doc.data();
+
+        const card = document.createElement("article");
+        card.className = "card wish";
+
+        const heading = document.createElement("h2");
+        heading.textContent = "A wish from Jojo ♡";
+
+        const message = document.createElement("p");
+        message.textContent = data.text || "";
+
+        const date = document.createElement("div");
+        date.className = "date";
+
+        if (data.createdAt && data.createdAt.toDate) {
+          date.textContent = data.createdAt.toDate().toLocaleString();
+        } else {
+          date.textContent = "Date not available yet";
+        }
+
+        card.appendChild(heading);
+        card.appendChild(message);
+        card.appendChild(date);
+        wishList.appendChild(card);
+      });
+
+    } catch (error) {
+      console.error(error);
+      status.textContent =
+        "Could not load wishes. Check your Firestore rules and account.";
+    }
+  }
+
+  document.getElementById("refreshButton").addEventListener("click", loadWishes);
+
+  document.getElementById("logoutButton").addEventListener("click", async function() {
+    await auth.signOut();
+    dashboard.style.display = "none";
+    loginPanel.style.display = "block";
+    wishList.innerHTML = "";
+    document.getElementById("password").value = "";
+  });
+
+  auth.onAuthStateChanged(async function(user) {
+    if (!user) return;
+
+    if (user.uid === OWNER_UID) {
+      await showDashboard();
+    } else {
+      await auth.signOut();
+    }
+  });
 </script>
 </body>
 </html>
