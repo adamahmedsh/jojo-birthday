@@ -1559,56 +1559,74 @@ document.getElementById("jxSurprise").addEventListener("click", function() {
 });
 
 // =====================================
-// WISH CORNER - SAVED ON THIS DEVICE
+// WISH CORNER - SEND WISH TO ADAM
 // =====================================
 
-function loadWishes() {
-  const list = document.getElementById("jxWishList");
-  list.innerHTML = "";
-
-  let wishes = [];
-
-  try {
-    wishes = JSON.parse(localStorage.getItem("jojoWishes") || "[]");
-  } catch (error) {
-    wishes = [];
+async function prepareFirebaseForWish() {
+  if (typeof firebase === "undefined") {
+    throw new Error("Firebase did not load.");
   }
 
-  wishes.forEach(wish => {
-    const item = document.createElement("div");
-    item.className = "jx-wish-item";
-    item.textContent = "♡ " + wish;
-    list.appendChild(item);
-  });
+  if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+  }
+
+  firebaseAuth = firebase.auth();
+  firebaseDB = firebase.firestore();
+
+  if (!firebaseAuth.currentUser) {
+    await firebaseAuth.signInAnonymously();
+  }
+
+  if (!firebaseAuth.currentUser) {
+    throw new Error("Could not connect to Firebase.");
+  }
 }
 
-document.getElementById("jxSaveWish").addEventListener("click", function() {
+document.getElementById("jxSaveWish").addEventListener("click", async function() {
   const input = document.getElementById("jxWishInput");
+  const status = document.getElementById("jxWishStatus");
+  const button = document.getElementById("jxSaveWish");
   const wish = input.value.trim();
 
   if (!wish) {
-    alert("Write a little wish first ♡");
+    status.textContent = "Write your wish first ♡";
     return;
   }
 
-  let wishes = [];
-
-  try {
-    wishes = JSON.parse(localStorage.getItem("jojoWishes") || "[]");
-  } catch (error) {
-    wishes = [];
+  if (wish.length > 300) {
+    status.textContent = "Maximum 300 characters.";
+    return;
   }
 
-  wishes.push(wish);
+  const confirmed = confirm(
+    "Your wish will be sent to Adam, and he will be able to read it. Do you want to send it?"
+  );
 
-  localStorage.setItem("jojoWishes", JSON.stringify(wishes));
+  if (!confirmed) return;
 
-  input.value = "";
-  loadWishes();
+  button.disabled = true;
+  button.textContent = "Sending...";
+
+  try {
+    await prepareFirebaseForWish();
+
+    await firebaseDB.collection("wishes").add({
+      text: wish,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+
+    input.value = "";
+    status.textContent = "Your wish has been sent to Adam ♡";
+
+  } catch (error) {
+    console.error("Wish error:", error);
+    status.textContent = "Could not send your wish. Please try again.";
+  } finally {
+    button.disabled = false;
+    button.textContent = "Send My Wish to Adam ♡";
+  }
 });
-
-loadWishes();
-
 // =====================================
 // PHOTO LIGHTBOX
 // =====================================
